@@ -1,0 +1,9 @@
+@media screen and (max-width: 810px) {
+    .trophy {
+        display: none !important;
+    }
+
+/*    .tint {
+		background: ;    
+	}*/
+}
