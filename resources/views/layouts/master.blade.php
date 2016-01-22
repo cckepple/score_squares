@@ -7,22 +7,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Starter</title>
+    <title>Score Squares</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="css/AdminLTE.min.css">
+    <link rel="stylesheet" href="/css/AdminLTE.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/flaticon.css"> 
     <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
           page. However, you can choose any other skin. Make sure you
           apply the skin class to the body tag so the changes take effect.
     -->
-    <link rel="stylesheet" href="css/skins/skin-blue.min.css">
+    <link rel="stylesheet" href="/css/skins/skin-black-light.min.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -51,7 +52,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   |               | sidebar-mini                            |
   |---------------------------------------------------------|
   -->
-  <body class="hold-transition skin-black sidebar-mini sidebar-collapse">
+  <body class="skin-black-light sidebar-mini sidebar-collapse">
     <div class="wrapper">
 
       <!-- Main Header -->
@@ -90,7 +91,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <a href="#">
                           <div class="pull-left">
                             <!-- User Image -->
-                            <img src="img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                            <img src="img/football_helmet.png" class="img-circle" alt="User Image">
                           </div>
                           <!-- Message title and timestamp -->
                           <h4>
@@ -108,78 +109,83 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </li><!-- /.messages-menu -->
 
               <!-- Notifications Menu -->
-              <li class="dropdown notifications-menu">
+              <!-- <li class="dropdown notifications-menu"> -->
                 <!-- Menu toggle button -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <!-- a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-bell-o"></i>
                   <span class="label label-warning">10</span>
                 </a>
                 <ul class="dropdown-menu">
                   <li class="header">You have 10 notifications</li>
-                  <li>
+                  <li> -->
                     <!-- Inner Menu: contains the notifications -->
-                    <ul class="menu">
-                      <li><!-- start notification -->
-                        <a href="#">
-                          <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                        </a>
-                      </li><!-- end notification -->
-                    </ul>
+                    <!-- <ul class="menu"> -->
+                      <!-- <li> -->
+                      <!-- start notification -->
+                        <!-- <a href="#"> -->
+                          <!-- <i class="fa fa-users text-aqua"></i> 5 new members joined today -->
+                        <!-- </a> -->
+                      <!-- </li> -->
+                      <!-- end notification -->
+                    <!-- ul>
                   </li>
                   <li class="footer"><a href="#">View all</a></li>
                 </ul>
-              </li>
+              </li> -->
+
               <!-- Tasks Menu -->
-              <li class="dropdown tasks-menu">
+              <!-- <li class="dropdown tasks-menu"> -->
                 <!-- Menu Toggle Button -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-flag-o"></i>
                   <span class="label label-danger">9</span>
                 </a>
                 <ul class="dropdown-menu">
                   <li class="header">You have 9 tasks</li>
-                  <li>
+                  <li> -->
                     <!-- Inner menu: contains the tasks -->
-                    <ul class="menu">
-                      <li><!-- Task item -->
-                        <a href="#">
+                    <!-- <ul class="menu"> -->
+                      <!-- <li> -->
+                      <!-- Task item -->
+                        <!-- <a href="#"> -->
                           <!-- Task title and progress text -->
-                          <h3>
+                          <!-- <h3>
                             Design some buttons
                             <small class="pull-right">20%</small>
-                          </h3>
+                          </h3> -->
                           <!-- The progress bar -->
-                          <div class="progress xs">
+                          <!-- <div class="progress xs"> -->
                             <!-- Change the css width attribute to simulate progress -->
-                            <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                            <!-- <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
                               <span class="sr-only">20% Complete</span>
                             </div>
                           </div>
-                        </a>
-                      </li><!-- end task item -->
-                    </ul>
+                        </a> -->
+                      <!-- </li> -->
+                      <!-- end task item -->
+                   <!--  </ul>
                   </li>
                   <li class="footer">
                     <a href="#">View all tasks</a>
                   </li>
                 </ul>
-              </li>
+              </li> -->
               <!-- User Account Menu -->
               <li class="dropdown user user-menu">
                 <!-- Menu Toggle Button -->
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <!-- The user image in the navbar-->
-                  <img src="img/user2-160x160.jpg" class="user-image" alt="User Image">
+                  <img src="img/football_helmet.png" class="user-image" alt="User Image">
                   <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                  <span class="hidden-xs">Alexander Pierce</span>
+                  <span class="hidden-xs">Username</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- The user image in the menu -->
                   <li class="user-header">
-                    <img src="img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    <img src="img/football_helmet.png" class="img-circle" alt="User Image">
                     <p>
-                      Alexander Pierce - Web Developer
-                      <small>Member since Nov. 2012</small>
+                      Username
+                      <!-- <small>Member since Nov. 2012</small> -->
                     </p>
                   </li>
                   <!-- Menu Body -->
@@ -200,7 +206,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       <a href="#" class="btn btn-default btn-flat">Profile</a>
                     </div>
                     <div class="pull-right">
-                      <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                      <a href="/logout" class="btn btn-default btn-flat">Sign out</a>
                     </div>
                   </li>
                 </ul>
@@ -220,16 +226,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <section class="sidebar">
 
           <!-- Sidebar user panel (optional) -->
-          <div class="user-panel">
+         <!--  <div class="user-panel">
             <div class="pull-left image">
               <img src="img/user2-160x160.jpg" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-              <p>User Name</p>
+              <p>User Name</p> -->
               <!-- Status -->
               <!-- <a href="#"><i class="fa fa-circle text-success"></i> Online</a> -->
-            </div>
-          </div>
+            <!-- </div> -->
+          <!-- </div> -->
 
           <!-- search form (Optional) -->
           <!-- <form action="#" method="get" class="sidebar-form">
@@ -244,9 +250,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
           <!-- Sidebar Menu -->
           <ul class="sidebar-menu">
-            <li class="header">HEADER</li>
+            <!-- <li class="header">HEADER</li> -->
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
+            <li class="active"><a href="#"><i class="flaticon-americanfootball3" style="position:relative;right:22px;font-size:15px;"></i><span>New Game</span></a></li>
             <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
             <li class="treeview">
               <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>
@@ -343,11 +349,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- REQUIRED JS SCRIPTS -->
 
     <!-- jQuery 2.1.4 -->
-    <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <script src="/plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <!-- Bootstrap 3.3.5 -->
-    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="js/app.min.js"></script>
+    <script src="/js/app.min.js"></script>
 
     <!-- Optionally, you can add Slimscroll and FastClick plugins.
          Both of these plugins are recommended to enhance the

@@ -1,9 +1,45 @@
+.landing {
+    /*background: url('/img/football_landing.jpg') no-repeat center center fixed; */
+    background: url('/img/large_fball.jpg') no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
 @media screen and (max-width: 810px) {
-    .trophy {
+	.trophy {
         display: none !important;
     }
-
-/*    .tint {
-		background: ;    
-	}*/
 }
+
+@media screen and (max-width: 765px) {
+    .landing-form {
+		min-width: 0px !important;
+	}	
+}
+
+@media screen and (max-width: 550px) {
+    .landing-logo {
+        font-size: 65px !important;
+    }   
+
+    .landing-text {
+        min-width: 0px !important;
+        font-size: 18px !important;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .landing-logo {
+        font-size: 50px !important;
+    }   
+
+    .landing-text {
+        min-width: 0px !important;
+        font-size: 14px !important;
+    }
+}
+
+
+

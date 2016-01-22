@@ -9,8 +9,8 @@ use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
-    public function showLanding()
+    public function getHome()
     {
-        return view('layouts.login');
+        return view('home.welcome');
     }
 }
