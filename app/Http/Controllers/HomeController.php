@@ -11,6 +11,6 @@ class HomeController extends Controller
 {
     public function getHome()
     {
-        return view('home.welcome');
+        return view('pool.create');
     }
 }

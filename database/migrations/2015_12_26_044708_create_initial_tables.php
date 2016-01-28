@@ -44,7 +44,7 @@ class CreateInitialTables extends Migration
             $table->foreign('away_team_id')->references('id')->on('nfl_teams');
         });
 
-        Schema::create('games', function (Blueprint $table) {
+        Schema::create('pools', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('nfl_game_id')->unsigned();
             $table->string('password', 60);
@@ -64,14 +64,39 @@ class CreateInitialTables extends Migration
             $table->foreign('lq_winner_id')->references('id')->on('users');
         });
 
-        Schema::create('game_players', function(Blueprint $table) {
+        Schema::create('pool_players', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->integer('game_id')->unsigned();
-            $table->boolean('game_admin');
+            $table->integer('pool_id')->unsigned();
+            $table->boolean('pool_admin');
             $table->boolean('has_paid');
             $table->tinyInteger('quater_wins')->unsigned()->default(0);
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('pool_id')->references('id')->on('pools');
+        });
+
+        Schema::create('pool_squares', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('row')->unsigned();
+            $table->integer('column')->unsigned();
+            $table->integer('status')->unsigned();
+            $table->integer('pool_id')->unsigned();
+            $table->integer('user_id')->nullable()->unsigned();
+
+            $table->integer('fq_score_home')->unsigned()->nullable();
+            $table->integer('sq_score_home')->unsigned()->nullable();
+            $table->integer('tq_score_home')->unsigned()->nullable();
+            $table->integer('lq_score_home')->unsigned()->nullable();
+            $table->integer('fq_score_away')->unsigned()->nullable();
+            $table->integer('sq_score_away')->unsigned()->nullable();
+            $table->integer('tq_score_away')->unsigned()->nullable();
+            $table->integer('lq_score_away')->unsigned()->nullable();
+            $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('pool_id')->references('id')->on('pools');
         });
     }
 

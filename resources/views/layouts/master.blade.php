@@ -24,6 +24,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           apply the skin class to the body tag so the changes take effect.
     -->
     <link rel="stylesheet" href="/css/skins/skin-black-light.min.css">
+    @yield('topscript')
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -76,37 +77,41 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               <!-- Messages: style can be found in dropdown.less-->
-              <li class="dropdown messages-menu">
+              <!-- <li class="dropdown messages-menu"> -->
                 <!-- Menu toggle button -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-envelope-o"></i>
                   <span class="label label-success">4</span>
                 </a>
                 <ul class="dropdown-menu">
                   <li class="header">You have 4 messages</li>
-                  <li>
+                  <li> -->
                     <!-- inner menu: contains the messages -->
-                    <ul class="menu">
-                      <li><!-- start message -->
-                        <a href="#">
-                          <div class="pull-left">
+                    <!-- <ul class="menu"> -->
+                      <!-- <li> -->
+                      <!-- start message -->
+                        <!-- <a href="#"> -->
+                          <!-- <div class="pull-left"> -->
                             <!-- User Image -->
-                            <img src="img/football_helmet.png" class="img-circle" alt="User Image">
-                          </div>
+                            <!-- <img src="/img/football_helmet.png" class="img-circle" alt="User Image"> -->
+                          <!-- </div> -->
                           <!-- Message title and timestamp -->
-                          <h4>
+                          <!-- <h4>
                             Support Team
                             <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                          </h4>
+                          </h4> -->
                           <!-- The message -->
-                          <p>Why not buy a new awesome theme?</p>
-                        </a>
-                      </li><!-- end message -->
-                    </ul><!-- /.menu -->
-                  </li>
-                  <li class="footer"><a href="#">See All Messages</a></li>
-                </ul>
-              </li><!-- /.messages-menu -->
+                          <!-- <p>Why not buy a new awesome theme?</p> -->
+                        <!-- </a> -->
+                      <!-- </li> -->
+                      <!-- end message -->
+                    <!-- </ul> -->
+                    <!-- /.menu -->
+                  <!-- </li> -->
+                  <!-- <li class="footer"><a href="#">See All Messages</a></li> -->
+                <!-- </ul> -->
+              <!-- </li> -->
+              <!-- /.messages-menu -->
 
               <!-- Notifications Menu -->
               <!-- <li class="dropdown notifications-menu"> -->
@@ -175,21 +180,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- Menu Toggle Button -->
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <!-- The user image in the navbar-->
-                  <img src="img/football_helmet.png" class="user-image" alt="User Image">
+                  <img src="/img/football_helmet.png" class="user-image" alt="User Image">
                   <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                  <span class="hidden-xs">Username</span>
+                  <span class="hidden-xs">{{Auth::user()->email}}</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- The user image in the menu -->
-                  <li class="user-header">
-                    <img src="img/football_helmet.png" class="img-circle" alt="User Image">
+                  <li class="user-header" style="background-color:#ADADAD">
+                    <img src="/img/football_helmet.png" class="img-circle" alt="User Image">
                     <p>
-                      Username
+                      {{Auth::user()->email}}
                       <!-- <small>Member since Nov. 2012</small> -->
                     </p>
                   </li>
                   <!-- Menu Body -->
-                  <li class="user-body">
+                  <!-- <li class="user-body">
                     <div class="col-xs-4 text-center">
                       <a href="#">Followers</a>
                     </div>
@@ -199,12 +204,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <div class="col-xs-4 text-center">
                       <a href="#">Friends</a>
                     </div>
-                  </li>
+                  </li> -->
                   <!-- Mgenu Footer-->
                   <li class="user-footer">
-                    <div class="pull-left">
+                    <!-- <div class="pull-left">
                       <a href="#" class="btn btn-default btn-flat">Profile</a>
-                    </div>
+                    </div> -->
                     <div class="pull-right">
                       <a href="/logout" class="btn btn-default btn-flat">Sign out</a>
                     </div>
@@ -252,13 +257,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <ul class="sidebar-menu">
             <!-- <li class="header">HEADER</li> -->
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="#"><i class="flaticon-americanfootball3" style="position:relative;right:22px;font-size:15px;"></i><span>New Game</span></a></li>
-            <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
+            <li class="active"><a href="/pool/create"><i class="flaticon-americanfootball3" style="position:relative;right:22px;font-size:15px;"></i><span>New Game</span></a></li>
+            <!-- <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li> -->
             <li class="treeview">
-              <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <a href="#"><i class="flaticon-american31" style="position:relative;right:22px;font-size:15px;"></i> <span>Open Pools</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">
-                <li><a href="#">Link in level 2</a></li>
-                <li><a href="#">Link in level 2</a></li>
+              @foreach(App\PoolPlayer::openPools(Auth::user()->id) as $pool)
+                <li><a href="/pool/{{$pool->id}}">{{$pool->id}}</a></li>
+              @endforeach
               </ul>
             </li>
           </ul><!-- /.sidebar-menu -->
@@ -354,6 +360,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="/bootstrap/js/bootstrap.min.js"></script>
     <!-- AdminLTE App -->
     <script src="/js/app.min.js"></script>
+    @yield('bottomscript')
 
     <!-- Optionally, you can add Slimscroll and FastClick plugins.
          Both of these plugins are recommended to enhance the
