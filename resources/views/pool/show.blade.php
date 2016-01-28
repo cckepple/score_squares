@@ -204,7 +204,7 @@ app.controller('ShowPoolCtrl', function ($scope, $http, $filter, $location, $tim
 	console.log($scope.absUrl);
 	$scope.niceUrl = $location.absUrl().substr(7);
 	console.log($scope.niceUrl);
-	$scope.poolId = $location.absUrl().substr(27);
+	$scope.poolId = $location.absUrl().substr(29);
 	console.log($scope.poolId);
 	$scope.letters = ['A','B','C','D','E','F','G','H','I','J'];
 	$scope.divs  = [{'name':'squares','id':1,'active':true},{'name':'players','id':2,'active':false},{'name':'board','id':3,'active':false},{'name':'admind','id':4,'active':false}]
