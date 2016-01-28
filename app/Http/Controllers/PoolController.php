@@ -146,7 +146,7 @@ class PoolController extends Controller
                         $poolCreator->has_paid = 0;
                         $poolCreator->save();
                     }
-                    //change
+
                     
                     return response()->json('success');
                 }else{
