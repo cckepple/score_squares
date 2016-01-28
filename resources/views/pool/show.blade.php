@@ -181,7 +181,7 @@ app.controller('ShowPoolCtrl', function ($scope, $http, $filter, $location, $tim
 	$scope.playerPay = function(player)
 	{
 		var poolPlayer = {'id':player.id,'poolId':player.pool_id,paidUp:player.paidUp};
-		$http.post('/api/pool/payer-paid', {poolPlayer:poolPlayer}).success(function(data){
+		$http.post('/api/pool/payer-paid', {poolPlayer: poolPlayer}).success(function(data){
 			$scope.getPoolSquares();
 			$scope.getPoolPlayers();
 		}).error(function(data){
