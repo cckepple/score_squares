@@ -177,9 +177,20 @@ class PoolController extends Controller
     public function playerPaid(Request $request)
     {
         $data = $request->input('poolPlayer');
+        Log::info($data);
         $player = PoolPlayer::find($data['id']);
         $squares = $player->unPaidSquares($data['poolId']);
         PoolSquare::claimSquares($squares, $data['paidUp']);
+        return response()->json('success');
+    }
+
+    public function removePlayerPaid(Request $request)
+    {
+        $data = $request->input('poolPlayer');
+        Log::info($data);
+        $player = PoolPlayer::find($data['id']);
+        $squares = $player->paidSquares($data['poolId']);
+        PoolSquare::unClaimSquares($squares, $data['paidDown']);
         return response()->json('success');
     }
 }

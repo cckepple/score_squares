@@ -29,12 +29,22 @@ class PoolSquare extends Model
         return self::findTypeById(self::$STATUSES, $value);
     }
 
-    public static function claimSquares($squares, $paidCount){
+    public static function claimSquares($squares, $paidCount)
+    {
         for ($i=0; $i < $paidCount; $i++) { 
             $squares[$i]->status = PoolSquare::STATUS_OWNED;
             $squares[$i]->save();
         }
     } 
+
+    public static function unClaimSquares($squares, $unPaidCount)
+    {
+        for ($i=0; $i < $unPaidCount; $i++) { 
+            $squares[$i]->user_id = null;
+            $squares[$i]->status = PoolSquare::STATUS_OPEN;
+            $squares[$i]->save();
+        }
+    }
 
     public static function findTypeById($types, $id, $defaultIndex = 0)
     {

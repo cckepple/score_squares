@@ -52,6 +52,11 @@ class PoolPlayer extends Model
         return PoolSquare::where('user_id','=', $this->user_id)->where('pool_id','=',$poolId)->where('status','=',PoolSquare::STATUS_PENDING)->get();
     }
 
+    public function paidSquares($poolId)
+    {
+        return PoolSquare::where('user_id','=', $this->user_id)->where('pool_id','=',$poolId)->where('status','=',PoolSquare::STATUS_OWNED)->get();
+    }
+
     public static function openPools($userId)
     {
         
