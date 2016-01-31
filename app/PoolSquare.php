@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Log;
 
 class PoolSquare extends Model
 {
@@ -40,6 +41,7 @@ class PoolSquare extends Model
     public static function unClaimSquares($squares, $unPaidCount)
     {
         for ($i=0; $i < $unPaidCount; $i++) { 
+            Log::info($squares[$i]);
             $squares[$i]->user_id = null;
             $squares[$i]->status = PoolSquare::STATUS_OPEN;
             $squares[$i]->save();

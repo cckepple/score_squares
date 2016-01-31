@@ -15,6 +15,12 @@ use Log;
 
 class PoolController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -187,10 +193,17 @@ class PoolController extends Controller
     public function removePlayerPaid(Request $request)
     {
         $data = $request->input('poolPlayer');
-        Log::info($data);
         $player = PoolPlayer::find($data['id']);
-        $squares = $player->paidSquares($data['poolId']);
-        PoolSquare::unClaimSquares($squares, $data['paidDown']);
+        Log::info($data);
+        if ($data['holdClaim']) {
+            $squares = $player->allSquares($data['poolId']);
+        }else{
+            $squares = $player->paidSquares($data['poolId']);
+        }
+
+        if($squares){
+            PoolSquare::unClaimSquares($squares, $data['paidDown']);
+        }
         return response()->json('success');
     }
 }
