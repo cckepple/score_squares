@@ -389,7 +389,7 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 					            <span class="info-box-icon bg-gray"><i class="fa fa-flag-o"></i></span>
 					            <div class="info-box-content">
 					              <span class="info-box-text">1st Quarter</span>
-					              <span class="info-box-number">410</span>
+					              <span class="info-box-number">0-0</span>
 					            </div>
 					          </div>
 					        </div>
@@ -399,7 +399,7 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 
 					            <div class="info-box-content">
 					              <span class="info-box-text">2nd Quarter</span>
-					              <span class="info-box-number">410</span>
+					              <span class="info-box-number">0-0</span>
 					            </div>
 					          </div>
 					        </div>
@@ -408,7 +408,7 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 					            <span class="info-box-icon bg-gray"><i class="fa fa-flag-o"></i></span>
 					            <div class="info-box-content">
 					              <span class="info-box-text">3rd Quarter</span>
-					              <span class="info-box-number">410</span>
+					              <span class="info-box-number">0-0</span>
 					            </div>
 					          </div>
 					        </div>
@@ -417,7 +417,7 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 					            <span class="info-box-icon bg-gray"><i class="fa fa-flag-o"></i></span>
 					            <div class="info-box-content">
 					              <span class="info-box-text">4th Quarter</span>
-					              <span class="info-box-number">410</span>
+					              <span class="info-box-number">0-0</span>
 					            </div>
 					          </div>
 					        </div>
@@ -438,7 +438,7 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 									<h4>Current Players</h4>
 									<div class="row" ng-repeat="player in players">
 										<div class="col-xs-12">
-								          <div class="info-box">
+								          <div class="info-box" style="min-height:115px">
 								            <span class="info-box-icon" ng-class="{'bg-green':player.totalSquareCount>0&&(player.paidSquareCount==player.totalSquareCount),'bg-orange':player.oweSquareCount>0&&player.paidSquareCount>0, 'bg-red':player.paidSquareCount==0&&player.totalSquareCount>0}">
 								            	<i class="fa fa-question" ng-show="player.totalSquareCount==0"></i>
 								            	<i class="fa fa-thumbs-o-up" ng-hide="player.paidSquareCount==player.totalSquareCount"></i>
