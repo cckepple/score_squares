@@ -52,13 +52,16 @@ class PoolController extends Controller
         try {
             
             Log::info($request->all());
+
+            $honor = $request->input('honor_system');
+            Log::info($honor);
             $pool = new Pool();
             $pool->name = $request->input('name');
             $pool->status = Pool::STATUS_SQUARES_OPEN;
             $pool->nfl_game_id = $request->input('nfl_game_id');
             $pool->square_cost = $request->input('square_cost');
             $pool->password = $request->input('password');
-            $pool->honor_system = isset($request->input('honor_system')) ? 1 : 0;
+            $pool->honor_system = $honor ? 1 : 0;
             $pool->save();
 
             $poolCreator = new PoolPlayer();
