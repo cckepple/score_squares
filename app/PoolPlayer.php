@@ -71,5 +71,9 @@ class PoolPlayer extends Model
         
     }
 
+    public static function poolAdmin($poolId)
+    {
+        return PoolPlayer::with('user')->where('pool_id','=',$poolId)->where('pool_admin','=',1)->first();
+    }
 }
 

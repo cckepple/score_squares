@@ -36,6 +36,11 @@
 		position: relative;
 		bottom:60px;
 	}
+	@media only screen and (max-width: 1000px) {
+		.content-containers{
+			overflow-x:auto;
+		}
+	}
 	@media only screen and (max-width: 767px) {
 	    .square-table {
 	        margin-left: 50px;
@@ -43,8 +48,8 @@
 	    }
 	    .den-text{
 	    	font-size:1em;
-	    	left:10px;
-	    	top:125px;
+	    	left:0px;
+	    	top:85px;
 	    }
 	    .den-image{
 	    	max-width: 50px;
@@ -85,6 +90,8 @@ app.controller('ShowPoolCtrl', function ($scope, $http, $filter, $location, $tim
 			var squares = data.squares;
 			$scope.myId = data.curUser;
 			$scope.gameInfo = data.gameInfo;
+			$scope.admin = data.admin;
+			console.log($scope.admin);
 			$scope.grid = []
 			var i = 0;
 			for (var r = 0; r < 10; r++) {
@@ -92,7 +99,7 @@ app.controller('ShowPoolCtrl', function ($scope, $http, $filter, $location, $tim
 				var currentRow = $scope.grid[r];
 				for (var c = 10; c > 0; c--) {
 					squares[i].active = false;
-					if (squares[i].user_id == $scope.myId && squares[i].status.id == 3) {
+					if (squares[i].user_id == $scope.myId) {
 						squares[i].mySquare = true;
 					}
 					currentRow.slots.push(squares[i]);
@@ -131,6 +138,9 @@ app.controller('ShowPoolCtrl', function ($scope, $http, $filter, $location, $tim
 	        },
 	        squareCost: function() {
 	        	return $scope.gameInfo.square_cost;
+	        },
+	        admin: function() {
+	        	return $scope.admin;
 	        }
 	      }
 		});
@@ -256,9 +266,11 @@ app.controller('ShowPoolCtrl', function ($scope, $http, $filter, $location, $tim
 
 });
 
-app.controller('ClaimedModalInstanceCtrl', function ($scope, $uibModalInstance, square, squareCost) {
+app.controller('ClaimedModalInstanceCtrl', function ($scope, $uibModalInstance, square, squareCost, admin) {
+  $scope.square = square;
   $scope.squareCost = squareCost;
   $scope.squareName = String.fromCharCode(64 + parseInt(square.column))+'-'+square.row;
+  $scope.admin = admin;
 
   $scope.ok = function () {
     $uibModalInstance.close($scope.squareName, $scope.squareCost);
@@ -327,13 +339,13 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 @section('content')
 <div ng-app="scoreSquares" ng-controller="ShowPoolCtrl">
 	<section class="content-header">
-	  	<h4>SUPER BOWL 50 - Pool Name</h4>
+	  	<h4>SUPER BOWL 50 - [[gameInfo.name]]</h4>
 	</section>
 	<section class="content">
 	  	<div class="row">
 	  		<div class="col-lg-12">
 				<div class="box box-default">
-					<div class="box-body ng-cloak" style="overflow-x:auto" ng-hide="pageLoading">
+					<div class="box-body ng-cloak content-containers"  ng-hide="pageLoading">
 					  	<div class="row">
 					  		<div class="col-sm-12">
 						  		<div class="btn-group text-center" role="group">
@@ -355,15 +367,16 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 							    <table class="table square-table">
 							    	<tr style="border-left:5px solid black;border-right:1px solid #f4f4f4;">
 							    		<td style="border-top:5px solid black;"></td>
-							    		<td ng-repeat="letter in letters" style="border-top:5px solid #0088CE">[[letter]]</td>
+							    		<td ng-repeat="letter in letters" style="border-top:5px solid #009ADA">[[letter]]</td>
 							    	</tr>
 							    	<tr ng-repeat="row in grid">
-							    		<td style="border-left:5px solid #FB4F14;width:1px;">[[row.row]]</td>
-							    		<td ng-click="selectSlot(slot)" ng-class="{'info':slot.active,'bg-gray':slot.status.id == 2,'bg-green':slot.mySquare, 'bg-red disabled':slot.status.id == 3}" ng-repeat="slot in row.slots" style="height:80px;width:80px;border:grey solid 1px;cursor:pointer;">
+							    		<td style="border-left:5px solid #F27022;width:1px;">[[row.row]]</td>
+							    		<td ng-click="selectSlot(slot)" ng-class="{'info':slot.active,'bg-gray':slot.status.id == 2,'bg-green':slot.mySquare && slot.status.id ==3, 'bg-red disabled':slot.status.id == 3}" ng-repeat="slot in row.slots" class="text-center" style="height:80px;width:80px;border:grey solid 1px;cursor:pointer;">
 							    			<i ng-show="makingPurchase && slot.active" class="fa fa-circle-o-notch fa-spin"></i>
-							    			<div ng-hide="makingPurchase && slot.active">[[slot.status.name]]</div>
-							    			<div ng-show="slot.status.id == 3">[[slot.user_id]]</div>
-							    			[[slot.mySquare]]
+							    			<div ng-hide="makingPurchase && slot.active">
+							    				[[slot.status.name]]
+							    				 <i class="fa fa-star-half-o text-center" ng-show="slot.mySquare"></i>
+							    			</div>
 							    		</td>
 							    	</tr>
 							    </table>
@@ -371,18 +384,18 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 						</div>
 						<div ng-show="divs[1].active" >
 							<h4>Score Board</h4>
-							<div class="col-md-3 col-sm-6 col-xs-12">
+							<div class="col-md-5 col-md-offset-1 col-xs-12">
 					          <div class="info-box">
-					            <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span>
+					            <span class="info-box-icon bg-gray"><i class="fa fa-flag-o"></i></span>
 					            <div class="info-box-content">
 					              <span class="info-box-text">1st Quarter</span>
 					              <span class="info-box-number">410</span>
 					            </div>
 					          </div>
 					        </div>
-					        <div class="col-md-3 col-sm-6 col-xs-12">
+					        <div class="col-md-5 col-md-offset-1 col-xs-12">
 					          <div class="info-box">
-					            <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span>
+					            <span class="info-box-icon bg-gray"><i class="fa fa-flag-o"></i></span>
 
 					            <div class="info-box-content">
 					              <span class="info-box-text">2nd Quarter</span>
@@ -390,23 +403,33 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 					            </div>
 					          </div>
 					        </div>
-					        <div class="col-md-3 col-sm-6 col-xs-12">
+					        <div class="col-md-5 col-md-offset-1 col-xs-12">
 					          <div class="info-box">
-					            <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span>
+					            <span class="info-box-icon bg-gray"><i class="fa fa-flag-o"></i></span>
 					            <div class="info-box-content">
 					              <span class="info-box-text">3rd Quarter</span>
 					              <span class="info-box-number">410</span>
 					            </div>
 					          </div>
 					        </div>
-					        <div class="col-md-3 col-sm-6 col-xs-12">
+					        <div class="col-md-5 col-md-offset-1 col-xs-12">
 					          <div class="info-box">
-					            <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span>
+					            <span class="info-box-icon bg-gray"><i class="fa fa-flag-o"></i></span>
 					            <div class="info-box-content">
 					              <span class="info-box-text">4th Quarter</span>
 					              <span class="info-box-number">410</span>
 					            </div>
 					          </div>
+					        </div>
+					        <h4>Rules</h4>
+					        <div class="col-lg-8 col-lg-offset-2">
+					        	<div class="callout callout-info">
+				                	<p>Each square is assigned a value for purchase.  Once all the squares have been
+					        	claimed and marked as paid, each square of the grid's X & Y axis will be assigned a number (0-9).  Each quarter
+					        	of the game will mark a new winner!  An example, if Carolina is winning 21 - 3 after the first quarter,
+					        	then the owner of the block that falls on the 1 spot on the X axis and the 3 spot ont the Y axis will have won!.
+					        	The game will assigned the winner 1/4 of the total pot after each quater in the game.</p>
+				              	</div>
 					        </div>
 						</div>
 						<div ng-show="divs[2].active">
@@ -417,24 +440,27 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 										<div class="col-xs-12">
 								          <div class="info-box">
 								            <span class="info-box-icon" ng-class="{'bg-green':player.totalSquareCount>0&&(player.paidSquareCount==player.totalSquareCount),'bg-orange':player.oweSquareCount>0&&player.paidSquareCount>0, 'bg-red':player.paidSquareCount==0&&player.totalSquareCount>0}">
-								            	<i class="fa fa-thumbs-o-up" ng-hide="player.oweSquareCount>0"></i>
+								            	<i class="fa fa-question" ng-show="player.totalSquareCount==0"></i>
+								            	<i class="fa fa-thumbs-o-up" ng-hide="player.paidSquareCount==player.totalSquareCount"></i>
 								            	<i class="fa fa-money" ng-show="player.oweSquareCount>0"></i>
 								            </span>
 								            <div class="info-box-content">
-									            <span class="info-box-text">[[player.user.email]]</span>
-									            <span class="info-box-number" style="margin" >
-									            	<span class="label label-default">[[player.paidSquareCount]]</span> Bought | 
-											        <span class="label label-default">[[player.totalSquareCount]]</span> Claimed 
-												</span>
-												<div style="color:#00a65a">
-									            	[[player.paidSquareCount * gameInfo.square_cost | currency]]
-												    <span style="color:#d73925">
-														([[player.oweSquareCount * gameInfo.square_cost | currency]])
+									            <span class="info-box-text" style="white-space:normal">
+									            	<span style="color:#00a65a">
+									            		[[player.paidSquareCount * gameInfo.square_cost | currency]]
+									            		<span style="color:#d73925" ng-show="player.oweSquareCount>0">
+															([[player.oweSquareCount * gameInfo.square_cost | currency]])
+														</span>
 													</span>
+									            	[[player.user.email]]
+												</span>
+									            <div class="info-box-number" >
+									            	<span class="label label-primary col-xs-12 col-lg-6" style="margin-bottom:5px;">Bought:[[player.paidSquareCount]]</span> 
+									            	<span class="label label-primary col-xs-12 col-lg-6" style="margin-bottom:5px;">Claimed: [[player.totalSquareCount]]</span>
 												</div>
-												<div>
-								                    <span class="label label-primary" style="font-size:.7em;cursor:pointer" ng-click="markPaid(player)">Add Payment</span>
-								                    <span class="label label-danger" style="font-size:.7em;cursor:pointer" ng-click="removePayment(player)">Remove Payment</span>
+												<div style="margin-top:5px;">
+								                    <span class="label label-success col-xs-12" style="cursor:pointer;margin-bottom:5px;" ng-click="markPaid(player)" ng-hide="player.totalSquareCount == player.paidSquareCount">Add Payment</span>
+								                    <span class="label label-danger col-xs-12" style="cursor:pointer" ng-click="removePayment(player)">Remove Payment</span>
 							                    </div>
 											  </span>
 								            </div>
@@ -445,12 +471,12 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 								<div class="col-sm-6">
 									<h4>Invite friends!</h4>
 									<div class="row">
-										<div class="col-lg-10 col-md-10 col-sm-2 col-xs-12">
+										<div class="col-sm-9 col-xs-12">
 											<div class="alert alert-info" style="height:60px;font-size:1.15em;font-weight:bold;background-color: #F4F4F4 !important;">
 										        <div class="info info-info" style="color:black">[[niceUrl]]</div>
 									        </div>
 								        </div>
-								        <div class="col-lg-2 col-md-2 col-sm-2">
+								        <div class="col-sm-2">
 								        	<button class="btn-app copyBtn" id="copyLink" data-clipboard-text="[[absUrl]]" style="margin-left:0px;"><i class="fa fa-copy"></i> Copy</button>
 										</div>
 									</div>
@@ -481,13 +507,21 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 		    <h3 class="modal-title">Claim Square: [[ squareName ]]</h3>
 		</div>
 		<div class="modal-body text-center">
-		    Square Cost:<strong> [[squareCost | currency]]</strong><br>
-		    Pay Game Admin:<br>
-		    Once payment is marked recieved, the square will officially be yours.<br>
+			<div ng-show="square.status.id == 1">
+			    Square Cost:<strong> [[squareCost | currency]]</strong><br>
+			    Pay Game Admin: [[admin.user.name]] ([[admin.user.email]])<br>
+			    <span class="text-muted">Once payment is marked recieved, the square will officially be yours.</span<br>
+			</div>
+			<div ng-show="square.status.id == 2">
+				This Square is currently pending payment.
+			</div>
+			<div ng-show="square.status.id == 3">
+				This square is already claimed.
+			</div>
 		</div>
 		<div class="modal-footer">
 		    <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
-		    <button class="btn btn-primary" type="button" ng-click="ok()">Save</button>
+		    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
 		</div>
 	</script>
 	<script type="text/ng-template" id="mark-paid.html">

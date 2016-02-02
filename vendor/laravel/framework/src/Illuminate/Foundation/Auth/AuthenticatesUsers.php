@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\Lang;
 trait AuthenticatesUsers
 {
     use RedirectsUsers;
-    
-    protected $redirectPath = '/pool/create';
 
     /**
      * Show the application login form.
@@ -22,7 +20,8 @@ trait AuthenticatesUsers
         if (view()->exists('auth.authenticate')) {
             return view('auth.authenticate');
         }
-        return view('home.landing');
+
+        return view('auth.login');
     }
 
     /**
@@ -47,10 +46,10 @@ trait AuthenticatesUsers
         }
 
         $credentials = $this->getCredentials($request);
+
         if (Auth::attempt($credentials, $request->has('remember'))) {
             return $this->handleUserWasAuthenticated($request, $throttles);
         }
-
 
         // If the login attempt was unsuccessful we will increment the number of attempts
         // to login and redirect the user back to the login form. Of course, when this

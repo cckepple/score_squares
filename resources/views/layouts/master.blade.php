@@ -263,7 +263,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <a href="#"><i class="flaticon-american31" style="position:relative;right:22px;font-size:15px;"></i> <span>Open Pools</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">
               @foreach(App\PoolPlayer::openPools(Auth::user()->id) as $pool)
-                <li><a href="/pool/{{$pool->id}}">{{$pool->id}}</a></li>
+                <li><a href="/pool/{{$pool->id}}">{{$pool->name}}</a></li>
               @endforeach
               </ul>
             </li>

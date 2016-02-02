@@ -20,16 +20,23 @@
               <div class="box-body">
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-
                   <div class="col-sm-10">
                     <input type="email" class="form-control" name="email" id="inputEmail3" placeholder="Email">
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-
                   <div class="col-sm-10">
                     <input type="password" class="form-control" name="password" id="inputPassword3" placeholder="Password">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-8">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="remember" checked> Keep me logged in.
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>

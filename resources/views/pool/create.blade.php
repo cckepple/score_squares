@@ -4,7 +4,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    Create New Game
+    Create New Pool
     <!-- <small>Optional description</small> -->
   </h1>
   <!-- <ol class="breadcrumb">
@@ -24,6 +24,10 @@
 				<!-- form start -->
 				{!! Form::open(['action' => 'PoolController@store']) !!}
 				  	<div class="box-body">
+				  		<div class="form-group col-lg-12">
+					      <label>Pool Name</label>
+					      <input type="name" class="form-control" name="name" placeholder="Name">
+					    </div>
 					    <div class="form-group col-lg-3">
 					      <label>Choose Week</label>
 					      <select class="form-control" name="game_week" id="game_week">

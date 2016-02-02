@@ -47,6 +47,7 @@ class CreateInitialTables extends Migration
         Schema::create('pools', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('nfl_game_id')->unsigned();
+            $table->string('name');
             $table->string('password', 60);
             $table->string('square_cost');
             $table->boolean('honor_system');
@@ -107,10 +108,12 @@ class CreateInitialTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('game_players');
-        Schema::dropIfExists('games');
+        Schema::dropIfExists('pool_players');
+        Schema::dropIfExists('pool_squares');
+        Schema::dropIfExists('pools');
         Schema::dropIfExists('nfl_games');
         Schema::dropIfExists('nfl_teams');
+
 
     }
 }

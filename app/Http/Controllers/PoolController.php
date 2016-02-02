@@ -50,7 +50,17 @@ class PoolController extends Controller
     public function store(Request $request)
     {
         try {
-            $pool = Pool::create($request->all());
+            
+            
+            $pool = new Pool();
+            $pool->name = $request->input('name');
+            $pool->status = Pool::STATUS_SQUARES_OPEN;
+            $pool->nfl_game_id = $request->input('nfl_game_id');
+            $pool->square_cost = $request->input('square_cost');
+            $pool->password = $request->input('password');
+            $pool->honor_system = $request->input('honor_system');
+            $pool->save();
+
             $poolCreator = new PoolPlayer();
             $poolCreator->user_id = $request->user()->id;
             $poolCreator->pool_id = $pool->id;
@@ -124,7 +134,7 @@ class PoolController extends Controller
 
     public function getPoolSquares($id)
     {
-        return response()->json(array('squares'=>PoolSquare::where('pool_id','=', $id)->get(), 'curUser'=>Auth::user()->id, 'gameInfo'=>Pool::find($id)));
+        return response()->json(array('squares'=>PoolSquare::where('pool_id','=', $id)->get(), 'curUser'=>Auth::user()->id, 'gameInfo'=>Pool::find($id), 'admin'=>PoolPlayer::poolAdmin($id)));
     }
 
     public function purchaseSquare($id)
