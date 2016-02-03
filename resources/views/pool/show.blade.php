@@ -497,9 +497,10 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 								          <div class="info-box">
 								            <span class="info-box-icon" ng-class="{'bg-green':player.totalSquareCount>0&&(player.paidSquareCount==player.totalSquareCount),'bg-orange':player.oweSquareCount>0&&player.paidSquareCount>0, 'bg-red':player.paidSquareCount==0&&player.totalSquareCount>0}">
 								            	<i class="fa fa-question" ng-show="player.totalSquareCount==0"></i>
-								            	<i class="fa fa-thumbs-o-up" ng-hide="player.oweSquareCount>0"></i>
+								            	<i class="fa fa-thumbs-o-up" ng-show="player.oweSquareCount==0&&player.totalSquareCount>0"></i>
 								            	<i class="fa fa-money" ng-show="player.oweSquareCount>0"></i>
 								            </span>
+								            [[player]]
 								            <div class="info-box-content" style="padding-top:0px;">
 									            <span class="info-box-text">
 									            	<span style="color:#00a65a">
