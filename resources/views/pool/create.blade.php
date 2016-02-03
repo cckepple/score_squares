@@ -52,7 +52,7 @@
 					      <label>Game Password</label>
 					      <input type="password" class="form-control" name="password" placeholder="Password">
 					    </div>
-					    <div class="checkbox form-group col-lg-12">
+					    <!-- <div class="checkbox form-group col-lg-12">
 					      <label>
 					        <input type="checkbox" name="honor_system"> Honor System
 					      </label>
@@ -61,7 +61,7 @@
 			                	Without this, each square purchase requires the game creator to verify
 			                	that the money has been received.
 							</p>
-					    </div>
+					    </div> -->
 
 
 					   <!--  <div class="form-group">
