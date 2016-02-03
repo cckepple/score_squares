@@ -38,10 +38,17 @@ class PoolSquare extends Model
         }
     } 
 
-    public static function unClaimSquares($squares, $unPaidCount)
+    public static function unPaySquares($squares, $unPaidCount)
     {
         for ($i=0; $i < $unPaidCount; $i++) { 
-            Log::info($squares[$i]);
+            $squares[$i]->status = PoolSquare::STATUS_PENDING;
+            $squares[$i]->save();
+        }
+    }
+
+    public static function unClaimSquares($squares, $unClaimCount)
+    {
+        for ($i=0; $i < $unClaimCount; $i++) { 
             $squares[$i]->user_id = null;
             $squares[$i]->status = PoolSquare::STATUS_OPEN;
             $squares[$i]->save();

@@ -205,6 +205,28 @@ app.controller('ShowPoolCtrl', function ($scope, $http, $filter, $location, $tim
 	  	});
 	};
 
+	$scope.unClaimSqaure = function(player)
+	{
+
+	  	var modalInstance = $uibModal.open({
+		  animation: true,
+		  templateUrl: 'unclaim-square.html',
+		  controller: 'UnclaimedModalInstanceCtrl',
+		  size: 'md',
+		  resolve: {
+	        player: function() {
+	        	return player;
+	        },
+	      }
+		});
+
+		modalInstance.result.then(function (selectedPlayer) {
+			$scope.removePlayerClaim(selectedPlayer);
+		}, function () {
+		  console.log('Modal dismissed at: ' + new Date());
+	  	});
+	}
+
 	$scope.claimSquare = function(square)
 	{
 		$http.get('/api/square/'+square.id+'/purchase').success(function(data){
@@ -229,6 +251,16 @@ app.controller('ShowPoolCtrl', function ($scope, $http, $filter, $location, $tim
 		var poolPlayer = {'id':player.id,'poolId':player.pool_id,paidDown:player.paidDown};
 		$http.post('/api/pool/remove-player-pay', {poolPlayer: poolPlayer}).success(function(data){
 			console.log(data);
+			$scope.getData();
+		}).error(function(data){
+			console.log(data);
+		});
+	}
+
+	$scope.removePlayerClaim = function(player)
+	{
+		var poolPlayer = {'id':player.id, 'poolId':player.pool_id,claimDown:player.claimDown};
+		$http.post('/api/pool/remove-player-claim', {poolPlayer: poolPlayer}).success(function(data){
 			$scope.getData();
 		}).error(function(data){
 			console.log(data);
@@ -266,6 +298,25 @@ app.controller('ShowPoolCtrl', function ($scope, $http, $filter, $location, $tim
 
 });
 
+app.controller('UnclaimedModalInstanceCtrl', function ($scope, $uibModalInstance, player) {
+  $scope.selectedPlayer = player;
+  $scope.selectedPlayer.claimDown = 0;
+  $scope.ok = function () {
+    $uibModalInstance.close($scope.selectedPlayer);
+  };
+
+  $scope.cancel = function () {
+  	$scope.selectedPlayer.claimDown = 0;
+    $uibModalInstance.dismiss('cancel');
+  };
+
+  $scope.watchBalance = function() {
+  	if($scope.selectedPlayer.claimDown > player.oweSquareCount){
+		$scope.selectedPlayer.claimDown = player.oweSquareCount;
+	}
+  }
+});
+
 app.controller('ClaimedModalInstanceCtrl', function ($scope, $uibModalInstance, square, squareCost, admin) {
   $scope.square = square;
   $scope.squareCost = squareCost;
@@ -283,6 +334,7 @@ app.controller('ClaimedModalInstanceCtrl', function ($scope, $uibModalInstance, 
 
 app.controller('PaidModalInstanceCtrl', function ($scope, $uibModalInstance, player, squareCost) {
 	$scope.selectedPlayer = player;
+	$scope.selectedPlayer.paidUp = 0;
 	$scope.totalPaid = 0;
 	$scope.squaresPaid = 0;
 	$scope.owedBalance = (player.oweSquareCount  * squareCost);
@@ -292,6 +344,7 @@ app.controller('PaidModalInstanceCtrl', function ($scope, $uibModalInstance, pla
 	};
 
 	$scope.cancel = function () {
+	  $scope.selectedPlayer.paidUp = 0;
 	  $uibModalInstance.dismiss('cancel');
 	};
 
@@ -308,6 +361,7 @@ app.controller('PaidModalInstanceCtrl', function ($scope, $uibModalInstance, pla
 
 app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance, player, squareCost) {
 	$scope.selectedPlayer = player;
+	$scope.selectedPlayer.paidDown = 0;
 	$scope.totalPaid = 0;
 	$scope.squaresPaid = 0;
 	$scope.owedBalance = (player.oweSquareCount  * squareCost);
@@ -317,21 +371,23 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 	};
 
 	$scope.cancel = function () {
+	  $scope.selectedPlayer.paidDown = 0;
 	  $uibModalInstance.dismiss('cancel');
 	};
 
 	$scope.watchBalance = function()
 	{
-
 		if ($scope.selectedPlayer.paidDown > 0){
-			if ($scope.selectedPlayer.paidDown > $scope.selectedPlayer.totalSquareCount) {
-				$scope.selectedPlayer.paidDown = $scope.selectedPlayer.totalSquareCount;
+			if ($scope.selectedPlayer.paidDown > $scope.selectedPlayer.paidSquareCount) {
+				$scope.selectedPlayer.paidDown = $scope.selectedPlayer.paidSquareCount;
 			};
 			$scope.owedBalance = $scope.selectedPlayer.paidDown * squareCost;
 		};
 
 	}
 });
+
+
 
 </script>
 @stop
@@ -438,14 +494,14 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 									<h4>Current Players</h4>
 									<div class="row" ng-repeat="player in players">
 										<div class="col-xs-12">
-								          <div class="info-box" style="min-height:115px">
+								          <div class="info-box">
 								            <span class="info-box-icon" ng-class="{'bg-green':player.totalSquareCount>0&&(player.paidSquareCount==player.totalSquareCount),'bg-orange':player.oweSquareCount>0&&player.paidSquareCount>0, 'bg-red':player.paidSquareCount==0&&player.totalSquareCount>0}">
 								            	<i class="fa fa-question" ng-show="player.totalSquareCount==0"></i>
-								            	<i class="fa fa-thumbs-o-up" ng-hide="player.paidSquareCount==player.totalSquareCount"></i>
+								            	<i class="fa fa-thumbs-o-up" ng-hide="player.oweSquareCount>0"></i>
 								            	<i class="fa fa-money" ng-show="player.oweSquareCount>0"></i>
 								            </span>
-								            <div class="info-box-content">
-									            <span class="info-box-text" style="white-space:normal">
+								            <div class="info-box-content" style="padding-top:0px;">
+									            <span class="info-box-text">
 									            	<span style="color:#00a65a">
 									            		[[player.paidSquareCount * gameInfo.square_cost | currency]]
 									            		<span style="color:#d73925" ng-show="player.oweSquareCount>0">
@@ -454,14 +510,20 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 													</span>
 									            	[[player.user.email]]
 												</span>
-									            <div class="info-box-number" >
-									            	<span class="label label-primary col-xs-12 col-lg-6" style="margin-bottom:5px;">Bought:[[player.paidSquareCount]]</span> 
-									            	<span class="label label-primary col-xs-12 col-lg-6" style="margin-bottom:5px;">Claimed: [[player.totalSquareCount]]</span>
+									            <div class="info-box-number" style="font-weight:normal;font-size:1em;">
+									            	<span class="col-xs-12">
+									            		Own:[[player.paidSquareCount]]
+									            		<span class="btn btn-danger btn-xs pull-right" style="cursor:pointer;" ng-click="removePayment(player)" ng-show="player.paidSquareCount>0">Remove Payment</span>
+									            	</span>
+									            	<span class="col-xs-12">
+									            		Pending: [[player.oweSquareCount]]
+									            		<span class="btn btn-success btn-xs pull-right" style="cursor:pointer;" ng-click="markPaid(player)" ng-hide="player.totalSquareCount == player.paidSquareCount">Add Payment</span>
+									            	</span>
+									            	<span class="col-xs-12">
+									            		Claimed: [[player.totalSquareCount]]
+									            		<span class="btn btn-primary btn-xs pull-right" style="cursor:pointer" ng-click="unClaimSqaure(player)" ng-show="(player.totalSquareCount-player.paidSquareCount)>0">Unclaim Squares</span>
+									            	</span>
 												</div>
-												<div style="margin-top:5px;">
-								                    <span class="label label-success col-xs-12" style="cursor:pointer;margin-bottom:5px;" ng-click="markPaid(player)" ng-hide="player.totalSquareCount == player.paidSquareCount">Add Payment</span>
-								                    <span class="label label-danger col-xs-12" style="cursor:pointer" ng-click="removePayment(player)">Remove Payment</span>
-							                    </div>
 											  </span>
 								            </div>
 								          </div>
@@ -471,25 +533,25 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 								<div class="col-sm-6">
 									<h4>Invite friends!</h4>
 									<div class="row">
-										<div class="col-sm-9 col-xs-12">
-											<div class="alert alert-info" style="height:60px;font-size:1.15em;font-weight:bold;background-color: #F4F4F4 !important;">
+										<div class="col-xs-12">
+											<div class="alert alert-info col-xs-8" style="height:60px;font-size:1.15em;font-weight:bold;background-color: #F4F4F4 !important;">
 										        <div class="info info-info" style="color:black">[[niceUrl]]</div>
 									        </div>
+									        <div class="col-xs-4">
+									        	<button class="btn-app copyBtn pull-right" id="copyLink" data-clipboard-text="[[absUrl]]" style="margin-left:0px;"><i class="fa fa-copy"></i> Copy</button>
+									        </div>
 								        </div>
-								        <div class="col-sm-2">
-								        	<button class="btn-app copyBtn" id="copyLink" data-clipboard-text="[[absUrl]]" style="margin-left:0px;"><i class="fa fa-copy"></i> Copy</button>
-										</div>
 									</div>
 									<div class="row">
 										<div class="col-lg-12 text-muted" style="position:relative;bottom:10px;">*Copy the link above and share it to your friends along with the game password</div>
 									</div>
-									<h4>Game Settings</h4>
+									<!-- <h4>Game Settings</h4>
 									<div class="row">
 										<div class="col-xs-12">
 											<button class="btn btn-app">Square Cost</button>
 											<button class="btn btn-app">Reset Password</button>
 										</div>
-									</div>
+									</div> -->
 								</div>
 							</div>
 				  		</div>
@@ -560,6 +622,27 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 			   		Sqaures
 			   	</div>
 		   		<div class="col-xs-12 text-center" ng-show="owedBalance > 0" style="color:#d73925;margin-top:5px;">Balance: [[owedBalance | currency]]</div>
+		   	</div>
+		</div>
+		<div class="modal-footer">
+		    <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+		    <button class="btn btn-primary" type="button" ng-click="ok()" ng-class="{'disabled':!owedBalance}">OK</button>
+		</div>
+	</script>
+	<script type="text/ng-template" id="unclaim-square.html">
+		<div class="modal-header">
+		  <button type="button" ng-click="cancel()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+		    <h3 class="modal-title">Remove Claim</h3>
+		</div>
+		<div class="modal-body">
+		   <div class="row">
+		   		<div class="col-md-12 text-center" style="font-size:1.2em;margin-bottom:5px">Remove</div>
+		   		<div class="col-md-12 text-center" style="font-size:1.2em;margin-bottom:5px"><strong>[[selectedPlayer.user.email]]</strong></div>
+			   	<div class="col-md-12 text-center" style="font-size:1.2em">
+			    	Claim to
+			   		<input class="form-control input-lg" style="width:80px;display:inline;text-center" ng-change="watchBalance()" ng-model="selectedPlayer.claimDown" type='number' value="0" min="0"  step="1"/> 
+			   		Sqaures
+			   	</div>
 		   	</div>
 		</div>
 		<div class="modal-footer">

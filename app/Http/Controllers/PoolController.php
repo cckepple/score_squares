@@ -12,13 +12,15 @@ use App\PoolSquare;
 use DB;
 use Auth;
 use Log;
+use Session;
 
 class PoolController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth',['except'=>'show']);
+        $this->middleware('game',['only'=>'show']);
     }
 
     /**
@@ -95,10 +97,34 @@ class PoolController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $pool = Pool::find($id);
-        return view('pool.show')->with(array('pool'=>$pool));
+        if (PoolPlayer::inGame($request->user()->id, $pool->id)) {
+            return view('pool.show')->with(array('pool'=>$pool));
+        }else{
+            Log::info('show game PW screen');
+            return view('pool.password')->with(array('pool'=>$pool));
+        }
+    }
+
+    public function join(Request $request)
+    {
+        $pool = Pool::find($request->input('poolId'));
+        if ($pool->password == $request->input('password')) {
+            $player = new PoolPlayer();
+            $player->pool_id = $pool->id;
+            $player->user_id = $request->user()->id;
+            $player->pool_admin = 0;
+            $player->has_paid = 0;
+            $player->save();
+            return redirect()->action('PoolController@show', [$pool->id]);
+
+        }else{
+            Session::flash('info','Incorrect Password, please try again.');
+            return redirect()->back();
+        }
+
     }
 
     /**
@@ -196,7 +222,6 @@ class PoolController extends Controller
     public function playerPaid(Request $request)
     {
         $data = $request->input('poolPlayer');
-        Log::info($data);
         $player = PoolPlayer::find($data['id']);
         $squares = $player->unPaidSquares($data['poolId']);
         PoolSquare::claimSquares($squares, $data['paidUp']);
@@ -207,15 +232,20 @@ class PoolController extends Controller
     {
         $data = $request->input('poolPlayer');
         $player = PoolPlayer::find($data['id']);
-        Log::info($data);
-        if ($data['holdClaim']) {
-            $squares = $player->allSquares($data['poolId']);
-        }else{
-            $squares = $player->paidSquares($data['poolId']);
-        }
-
+        $squares = $player->paidSquares($data['poolId']);
         if($squares){
-            PoolSquare::unClaimSquares($squares, $data['paidDown']);
+            PoolSquare::unPaySquares($squares, $data['paidDown']);
+        }
+        return response()->json('success');
+    }
+
+    public function removePlayerClaim(Request $request)
+    {
+        $data = $request->input('poolPlayer');
+        $player = PoolPlayer::find($data['id']);
+        $squares = $player->unPaidSquares($data['poolId']);
+        if($squares){
+            PoolSquare::unClaimSquares($squares, $data['claimDown']);
         }
         return response()->json('success');
     }

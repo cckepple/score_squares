@@ -19,6 +19,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Theme style -->
     <link rel="stylesheet" href="/css/AdminLTE.min.css">
     <link rel="stylesheet" type="text/css" href="/css/flaticon.css"> 
+    <link rel="icon" sizes="55x55" href="/img/football_helmet.png"/>
     <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
           page. However, you can choose any other skin. Make sure you
           apply the skin class to the body tag so the changes take effect.
@@ -64,7 +65,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>S</b>S</span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><b>Square</b>Scores</span>
+          <span class="logo-lg"><b>Score</b>Squares</span>
         </a>
 
         <!-- Header Navbar -->

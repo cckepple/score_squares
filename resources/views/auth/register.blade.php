@@ -1,6 +1,12 @@
 @extends('layouts.landing')
 
 @section('content')
+@if(Session::has('info'))
+  <div class="alert alert-info alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <p>{{Session::get('info')}}</p>
+  </div>
+@endif
 <div class="register-box" style="margin-top:10px;margin-bottom:0px;">
   <div class="register-logo" style="min-height:20px;"></div>
   <div class="register-box-body">
@@ -41,7 +47,7 @@
         Google+</a>
     </div> -->
 
-    <a href="/" class="text-center">I already have a membership</a>
+    <a href="/" class="text-center" style="margin-top:5px;">I already have a membership</a>
   </div>
   <!-- /.form-box -->
   @if (count($errors) > 0)

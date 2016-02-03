@@ -20,6 +20,7 @@ Route::post('/register', 'Auth\AuthController@postRegister');
 
 // Route::get('/home', 'HomeController@getHome');
 Route::resource('/pool', 'PoolController');
+Route::post('/pool/join', 'PoolController@join');
 
 
 Route::get('/api/pool/{id}/squares', 'PoolController@getPoolSquares');
@@ -29,4 +30,5 @@ Route::get('/api/square/{id}/purchase', 'PoolController@purchaseSquare');
 
 Route::post('/api/pool/player-paid', 'PoolController@playerPaid');
 Route::post('/api/pool/remove-player-pay', 'PoolController@removePlayerPaid');
+Route::post('/api/pool/remove-player-claim', 'PoolController@removePlayerClaim');
 

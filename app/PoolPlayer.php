@@ -75,5 +75,10 @@ class PoolPlayer extends Model
     {
         return PoolPlayer::with('user')->where('pool_id','=',$poolId)->where('pool_admin','=',1)->first();
     }
+
+    public static function inGame($userId, $poolId)
+    {
+        return PoolPlayer::where('user_id','=',$userId)->where('pool_id','=',$poolId)->first();
+    }
 }
 
