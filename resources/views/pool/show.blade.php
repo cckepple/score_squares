@@ -626,7 +626,7 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 		</div>
 		<div class="modal-footer">
 		    <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
-		    <button class="btn btn-primary" type="button" ng-click="ok()" ng-class="{'disabled':!owedBalance}">OK</button>
+		    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
 		</div>
 	</script>
 	<script type="text/ng-template" id="unclaim-square.html">
@@ -647,7 +647,7 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 		</div>
 		<div class="modal-footer">
 		    <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
-		    <button class="btn btn-primary" type="button" ng-click="ok()" ng-class="{'disabled':!owedBalance}">OK</button>
+		    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
 		</div>
 	</script>
 </div>
