@@ -502,7 +502,7 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 								            </span>
 								            <div class="info-box-content" style="padding-top:0px;">
 									            <span class="info-box-text">
-									            	<span style="color:#00a65a">
+									            	<span style="color:#00a65a" ng-show="player.totalSquareCount>0">
 									            		[[player.paidSquareCount * gameInfo.square_cost | currency]]
 									            		<span style="color:#d73925" ng-show="player.oweSquareCount>0">
 															([[player.oweSquareCount * gameInfo.square_cost | currency]])
