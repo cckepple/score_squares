@@ -91,7 +91,6 @@ app.controller('ShowPoolCtrl', function ($scope, $http, $filter, $location, $tim
 			$scope.myId = data.curUser;
 			$scope.gameInfo = data.gameInfo;
 			$scope.admin = data.admin;
-			console.log($scope.admin);
 			$scope.grid = []
 			var i = 0;
 			for (var r = 0; r < 10; r++) {
@@ -407,7 +406,7 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 						  		<div class="btn-group text-center" role="group">
 									<button class="btn btn-primary" ng-class="{'active': divs[0].active}" ng-click="showDiv(1)">Squares</button>
 									<button class="btn btn-primary" ng-class="{'active': divs[1].active}" ng-click="showDiv(2)">Scores</button>
-									<button class="btn btn-primary" ng-class="{'active': divs[2].active}" ng-click="showDiv(3)">Admin</button>
+									<button class="btn btn-primary" ng-class="{'active': divs[2].active}" ng-click="showDiv(3)" ng-show="curUser == admin.user.id">Admin</button>
 								</div>	
 						  	</div>
 					  	</div>
