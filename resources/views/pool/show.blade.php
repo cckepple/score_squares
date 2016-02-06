@@ -439,7 +439,7 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 							    			<div ng-hide="makingPurchase && slot.active">
 							    				<i class="fa fa-star text-center fa-spin" ng-show="slot.status.id == 4" style="font-size:.8em;color:#F3F02D"></i>
 							    				<span ng->[[slot.status.name]]</span>
-							    				 <i class="fa fa-star-half-o text-center" ng-show="slot.mySquare" ng-hide="slot.status.id == 4"></i>
+							    				 <i class="fa fa-star-half-o text-center" ng-show="slot.mySquare && slot.status.id < 4"></i>
 							    				 <i class="fa fa-star text-center fa-spin" ng-show="slot.status.id == 4" style="font-size:.8em;color:#F3F02D"></i>
 							    				<br>[[slot.user.name]]
 							    				<br><span style="background-color:black;font-size:1.1em;padding:2px;"><span style="font-weight:bold;color:#009ADA">[[slot.home_score]]</span> - <span style="font-weight:bold;color:#F27022">[[slot.away_score]]</span></span>
