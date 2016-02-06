@@ -31,4 +31,3 @@ Route::get('/api/square/{id}/purchase', 'PoolController@purchaseSquare');
 Route::post('/api/pool/player-paid', 'PoolController@playerPaid');
 Route::post('/api/pool/remove-player-pay', 'PoolController@removePlayerPaid');
 Route::post('/api/pool/remove-player-claim', 'PoolController@removePlayerClaim');
-

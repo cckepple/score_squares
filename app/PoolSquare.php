@@ -25,6 +25,11 @@ class PoolSquare extends Model
        array('id'=>3,'name'=>'Claimed'),
     );
 
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'user_id');
+    }
+
     public function getStatusAttribute($value)
     {
         return self::findTypeById(self::$STATUSES, $value);

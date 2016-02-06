@@ -90,12 +90,17 @@ app.controller('ShowPoolCtrl', function ($scope, $http, $filter, $location, $tim
 			var squares = data.squares;
 			$scope.myId = data.curUser;
 			$scope.gameInfo = data.gameInfo;
+			console.log($scope.gameInfo);
 			$scope.admin = data.admin;
 			$scope.grid = []
+			$scope.homeScores = data.homeScores;
+			console.log($scope.homeScores)
+			console.log(data);
+			$scope.awayScores = data.awayScores;
 			console.log
 			var i = 0;
 			for (var r = 0; r < 10; r++) {
-				$scope.grid.push({'row':r+1, 'slots':[]});
+				$scope.grid.push({'row':$scope.awayScores[r], 'slots':[]});
 				var currentRow = $scope.grid[r];
 				for (var c = 10; c > 0; c--) {
 					squares[i].active = false;
@@ -423,15 +428,18 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 							    <table class="table square-table">
 							    	<tr style="border-left:5px solid black;border-right:1px solid #f4f4f4;">
 							    		<td style="border-top:5px solid black;"></td>
-							    		<td ng-repeat="letter in letters" style="border-top:5px solid #009ADA">[[letter]]</td>
+							    		<td ng-show="gameInfo.status == 1" ng-repeat="letter in letters" style="border-top:5px solid #009ADA">[[letter]]</td>
+							    		<td ng-show="gameInfo.status == 2" ng-repeat="score in homeScores" style="border-top:5px solid #009ADA"><strong>[[score]]</strong></td>
 							    	</tr>
 							    	<tr ng-repeat="row in grid">
-							    		<td style="border-left:5px solid #F27022;width:1px;">[[row.row]]</td>
+							    		<td style="border-left:5px solid #F27022;width:1px;"><strong>[[row.row]]</strong></td>
+							    		<!-- <td style="border-left:5px solid #F27022;width:1px;" ng-show="gameInfo.status == 1">[[row.row]]</td> -->
 							    		<td ng-click="selectSlot(slot)" ng-class="{'info':slot.active,'bg-gray':slot.status.id == 2,'bg-green':slot.mySquare && slot.status.id ==3, 'bg-red disabled':slot.status.id == 3}" ng-repeat="slot in row.slots" class="text-center" style="height:80px;width:80px;border:grey solid 1px;cursor:pointer;">
 							    			<i ng-show="makingPurchase && slot.active" class="fa fa-circle-o-notch fa-spin"></i>
 							    			<div ng-hide="makingPurchase && slot.active">
 							    				[[slot.status.name]]
 							    				 <i class="fa fa-star-half-o text-center" ng-show="slot.mySquare"></i>
+							    				<br>[[slot.user.name]]
 							    			</div>
 							    		</td>
 							    	</tr>

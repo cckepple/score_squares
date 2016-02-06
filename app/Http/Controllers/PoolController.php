@@ -162,8 +162,20 @@ class PoolController extends Controller
     }
 
     public function getPoolSquares($id)
-    {
-        return response()->json(array('squares'=>PoolSquare::where('pool_id','=', $id)->get(), 'curUser'=>Auth::user()->id, 'gameInfo'=>Pool::find($id), 'admin'=>PoolPlayer::poolAdmin($id)));
+    {   
+        $pool = Pool::find($id);
+        $homeScores = explode('-', $pool->home_scores);
+        $awayScores = explode('-', $pool->away_scores);
+        $data = array(
+                        'squares'=>PoolSquare::with('user')->where('pool_id','=', $id)->get(), 
+                        'curUser'=>Auth::user()->id, 
+                        'gameInfo'=>$pool, 
+                        'admin'=>PoolPlayer::poolAdmin($id),
+                        'homeScores'=>$homeScores,
+                        'awayScores'=>$awayScores
+                    );
+
+        return response()->json($data);
     }
 
     public function purchaseSquare($id)
