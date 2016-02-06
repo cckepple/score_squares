@@ -18,11 +18,13 @@ class PoolSquare extends Model
     const STATUS_OPEN = 1;
     const STATUS_PENDING = 2;
     const STATUS_OWNED = 3;
+    const STATUS_WINNER = 4;
 
     public static $STATUSES = array(
        array('id'=>1,'name'=>'Available'),
        array('id'=>2,'name'=>'Pending Payment'),
        array('id'=>3,'name'=>'Claimed'),
+       array('id'=>4,'name'=>'Winner')
     );
 
     public function user()

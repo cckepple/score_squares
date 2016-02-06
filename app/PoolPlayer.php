@@ -66,7 +66,6 @@ class PoolPlayer extends Model
         
         return PoolPlayer::join('pools', 'pools.id','=','pool_players.pool_id')
                           ->where('pool_players.user_id','=',$userId)
-                          ->where('pools.status','=', Pool::STATUS_SQUARES_OPEN)
                           ->get();
         
     }

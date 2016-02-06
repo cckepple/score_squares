@@ -434,13 +434,16 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 							    	<tr ng-repeat="row in grid">
 							    		<td style="border-left:5px solid #F27022;width:1px;"><strong>[[row.row]]</strong></td>
 							    		<!-- <td style="border-left:5px solid #F27022;width:1px;" ng-show="gameInfo.status == 1">[[row.row]]</td> -->
-							    		<td ng-click="selectSlot(slot)" ng-class="{'info':slot.active,'bg-gray':slot.status.id == 2,'bg-green':slot.mySquare && slot.status.id ==3, 'bg-red disabled':slot.status.id == 3}" ng-repeat="slot in row.slots" class="text-center" style="height:80px;width:80px;border:grey solid 1px;cursor:pointer;">
+							    		<td ng-click="selectSlot(slot)" ng-class="{'info':slot.active,'bg-gray':slot.status.id == 2,'bg-green':slot.mySquare && slot.status.id ==3, 'bg-red disabled':slot.status.id == 3,'bg-black':slot.status.id == 4}" ng-repeat="slot in row.slots" class="text-center" style="height:80px;width:80px;border:grey solid 1px;cursor:pointer;">
 							    			<i ng-show="makingPurchase && slot.active" class="fa fa-circle-o-notch fa-spin"></i>
 							    			<div ng-hide="makingPurchase && slot.active">
-							    				[[slot.status.name]]
-							    				 <i class="fa fa-star-half-o text-center" ng-show="slot.mySquare"></i>
+							    				<i class="fa fa-star text-center fa-spin" ng-show="slot.status.id == 4" style="font-size:.8em;color:#F3F02D"></i>
+							    				<span ng->[[slot.status.name]]</span>
+							    				 <i class="fa fa-star-half-o text-center" ng-show="slot.mySquare" ng-hide="slot.status.id == 4"></i>
+							    				 <i class="fa fa-star text-center fa-spin" ng-show="slot.status.id == 4" style="font-size:.8em;color:#F3F02D"></i>
 							    				<br>[[slot.user.name]]
 							    				<br><span style="background-color:black;font-size:1.1em;padding:2px;"><span style="font-weight:bold;color:#009ADA">[[slot.home_score]]</span> - <span style="font-weight:bold;color:#F27022">[[slot.away_score]]</span></span>
+							    				<!-- <div ng-show="slot.status.id == 4" style="color:#5AC594"><strong>$125.00!</strong></div> -->
 							    			</div>
 							    		</td>
 							    	</tr>

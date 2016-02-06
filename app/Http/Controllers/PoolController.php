@@ -261,4 +261,30 @@ class PoolController extends Controller
         }
         return response()->json('success');
     }
+
+    public function scoreGameShow($quarter,$gameId)
+    {
+        if ($quarter > 4) {
+            $quarter = 4;
+        }
+        $pool = Pool::find($gameId);
+        $data = array('quarter'=>$quarter, 'pool'=>$pool);
+        return view('pool.score-game')->with($data);
+    }
+    public function scoreGamePost(Request $request)
+    {
+        $homeScore = $request->input('home_score');
+        $awayScore = $request->input('away_score');
+        $gameId = $request->input('game_id');
+        $quarter = $request->input('quarter');
+        Log::info($homeScore);
+        Log::info($awayScore);
+
+        $winningSquare = PoolSquare::where('home_score','=',$homeScore)->where('away_score','=',$awayScore)->update(array('status'=>PoolSquare::STATUS_WINNER));
+        Pool::where('id','=',$gameId)->update(array('fq_winner_id'=>$winningSquare['user_id']));
+        $pool = Pool::find($gameId);
+        Session::flash('info','Score Was Saved! -- Car:'.$homeScore.' | Den: '.$awayScore);
+        $data = array('quarter'=>$quarter, 'pool'=>$pool['id']);
+        return view('pool.score-game')->with($data);
+    }
 }
