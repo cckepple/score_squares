@@ -440,6 +440,7 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 							    				[[slot.status.name]]
 							    				 <i class="fa fa-star-half-o text-center" ng-show="slot.mySquare"></i>
 							    				<br>[[slot.user.name]]
+							    				<br><span style="background-color:black;font-size:1.1em;padding:2px;"><span style="font-weight:bold;color:#009ADA">[[slot.home_score]]</span> - <span style="font-weight:bold;color:#F27022">[[slot.away_score]]</span></span>
 							    			</div>
 							    		</td>
 							    	</tr>
