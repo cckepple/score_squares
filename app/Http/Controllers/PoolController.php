@@ -285,7 +285,7 @@ class PoolController extends Controller
         $pool = Pool::find($gameId);
         Log::info($pool);
         Session::flash('info','Score Was Saved! -- Car:'.$homeScore.' | Den: '.$awayScore);
-        $data = array('quarter'=>$quarter, 'pool'=>$pool->id);
+        $data = array('quarter'=>$quarter, 'pool'=>$pool['id']);
         return view('pool.score-game')->with($data);
     }
 }
