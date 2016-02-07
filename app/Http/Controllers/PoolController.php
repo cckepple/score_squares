@@ -281,10 +281,10 @@ class PoolController extends Controller
         Log::info($awayScore);
 
         $winningSquare = PoolSquare::where('home_score','=',$homeScore)->where('away_score','=',$awayScore)->update(array('status'=>PoolSquare::STATUS_WINNER));
-        Pool::where('id','=',$gameId)->update(array('fq_winner_id'=>$winningSquare['user_id']));
+        Pool::where('id','=',$gameId)->update(array('fq_winner_id'=>$winningSquare->id));
         $pool = Pool::find($gameId);
         Session::flash('info','Score Was Saved! -- Car:'.$homeScore.' | Den: '.$awayScore);
-        $data = array('quarter'=>$quarter, 'pool'=>$pool['id']);
+        $data = array('quarter'=>$quarter, 'pool'=>$pool->id);
         return view('pool.score-game')->with($data);
     }
 }
