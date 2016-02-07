@@ -12,7 +12,7 @@
   <div class="register-box-body">
     <p class="login-box-msg">Super Bowl 50!</p>
     <p class="login-box-msg">Score Quarter <strong>{{$quarter}}</strong> </p>
-    <form action="/api/game/score-game/{{$quarter}}/{{$pool->id}}" method="post">
+    <form action="/api/game/score-game/{{$quarter}}/{{$pool['id']}}" method="post">
       {{ csrf_field() }}
       <div class="form-group has-feedback">
         <input type="text" class="form-control" id="home_score" name="home_score" placeholder="Panthers Score">
@@ -28,7 +28,7 @@
         <!-- /.col -->
       </div>
       <input type="hidden" value="{{$quarter}}" name="quater_id">
-      <input type="hidden" value="{{$pool->id}}" name="game_id">
+      <input type="hidden" value="{{$pool['id']}}" name="game_id">
     </form>
   </div>
   <!-- /.form-box -->
