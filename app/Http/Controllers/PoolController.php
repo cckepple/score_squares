@@ -283,6 +283,7 @@ class PoolController extends Controller
         $winningSquare = PoolSquare::where('home_score','=',$homeScore)->where('away_score','=',$awayScore)->update(array('status'=>PoolSquare::STATUS_WINNER));
         Pool::where('id','=',$gameId)->update(array('fq_winner_id'=>$winningSquare['id']));
         $pool = Pool::find($gameId);
+        Log::info($pool);
         Session::flash('info','Score Was Saved! -- Car:'.$homeScore.' | Den: '.$awayScore);
         $data = array('quarter'=>$quarter, 'pool'=>$pool->id);
         return view('pool.score-game')->with($data);
