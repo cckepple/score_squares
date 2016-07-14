@@ -68,7 +68,7 @@
                 <p>
                   ScoreSquares is an easy way to create the classic grid style pool for football games.  
                   Create a new game and invite your friends to join. 
-                  The app will set all the numbers of the grid once all the squares are claimed and will let you know who wins after each quater!
+                  The app will set all the numbers of the grid once all the squares are claimed and will let you know who wins after each quarter!
                 </p>
               </div>
           </div>
