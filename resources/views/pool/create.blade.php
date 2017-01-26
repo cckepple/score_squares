@@ -37,8 +37,9 @@
 					    <div class="form-group col-lg-9">
 					      <label>Choose Game</label>
 					      <!-- show games available for chosen week  -->
+
 					      <select class="form-control" name="nfl_game_id">
-					      	<option value="1">Patriots vs Falcons</option>
+					      	<option value="2">Patriots vs Falcons</option>
 					      </select>
 					    </div>
 					    <div class="form-group col-lg-4">
