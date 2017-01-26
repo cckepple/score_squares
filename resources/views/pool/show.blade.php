@@ -4,25 +4,25 @@
 	.disabled {
 		opacity: .65;
 	}
-	.den-text{
-		position:relative; 
-		top:135px; 
-		left:15px;
-		font-weight:bold;
-		font-size:1.2em
+	.atl-text{
+		display: block;
+    	font-weight: bold;
+    	font-size: 21px;
+    	padding-left: 10%;
 	}
 
-	.den-image{
-		max-width:100px;
-		max-height:100px;
-		position:relative;
-		top:60px;
+	.pats-div{
+		padding-left: 18%;
+    	margin-bottom: 17px;
 	}
 
-	.car-text{
-		font-size:1.2em;
-		position:relative;
-		bottom:30px;
+	.team-logos {
+		max-height: 100px;
+		max-width: 120px;
+	}
+
+	.pats-text{
+		font-size:1.5em;
 		font-weight:bold;
 	}
 	.car-image{
@@ -41,36 +41,34 @@
 			overflow-x:auto;
 		}
 	}
-	@media only screen and (max-width: 767px) {
-	    .square-table {
-	        margin-left: 50px;
-	        margin-top:25px;
-	    }
-	    .den-text{
+	@media only screen and (max-width: 940px) {
+		.team-logos {
+			max-height: 75px;
+			max-width: 75px;
+		}
+	    .atl-text{
 	    	font-size:1em;
-	    	left:0px;
-	    	top:85px;
 	    }
-	    .den-image{
-	    	max-width: 50px;
-	    	max-height: 50px;
-	    	top:40px;
-	    }
-	    .car-text{
+	    .pats-text{
 			font-size:1em;
-			bottom:20px;
 	    }
-	    .car-image{
-	    	max-width: 50px;
-	    	max-height: 50px;
-	    	bottom:25px;
-	    	left:5px;
-	    }
+	}
 
+	@media only screen and (max-width: 767px) {
+		.pats-div {
+			padding-left: 25%;
+		}
+
+		.team-logos {
+			max-height: 50px;
+			max-width: 50px;
+		}
 	    .copyBtn{
 	    	display: none;
 	    }
 	}
+
+
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-route.js"></script>
@@ -287,10 +285,11 @@ app.controller('ShowPoolCtrl', function ($scope, $http, $filter, $location, $tim
 		$scope.getPoolSquares();
 		$scope.getPoolPlayers();
 	}
-
+	var urlArr1 = $location.absUrl().split('/');
+	var urlArr2 = $location.absUrl().split('//');
 	$scope.absUrl = $location.absUrl();
-	$scope.niceUrl = $location.absUrl().substr(7);
-	$scope.poolId = $location.absUrl().substr(29);
+	$scope.poolId = urlArr1[urlArr1.length - 1];
+	$scope.niceUrl = urlArr2[1];
 
 	$scope.letters = ['A','B','C','D','E','F','G','H','I','J'];
 	$scope.divs  = [{'name':'squares','id':1,'active':true},{'name':'players','id':2,'active':false},{'name':'board','id':3,'active':false},{'name':'admind','id':4,'active':false}]
@@ -418,36 +417,45 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 					  	</div>
 					  	<hr>
 					  	<div ng-show="divs[0].active">
-						  	<div style="float:left;max-width:100px;">
-						  		<span class="den-text">Broncos</span>
-						  		<img src="/img/team_logos/broncos.png" class="den-image">
-						  	</div>
-						  	<div class="col-sm-9">
-						  		<img src="/img/team_logos/carolina.png" class="car-image">
-						  		<span class="car-text">Panthers</span>
-							    <table class="table square-table">
-							    	<tr style="border-left:5px solid black;border-right:1px solid #f4f4f4;">
-							    		<td style="border-top:5px solid black;"></td>
-							    		<td ng-show="gameInfo.status == 1" ng-repeat="letter in letters" style="border-top:5px solid #009ADA">[[letter]]</td>
-							    		<td ng-show="gameInfo.status == 2" ng-repeat="score in homeScores" style="border-top:5px solid #009ADA"><strong>[[score]]</strong></td>
-							    	</tr>
-							    	<tr ng-repeat="row in grid">
-							    		<td style="border-left:5px solid #F27022;width:1px;"><strong>[[row.row]]</strong></td>
-							    		<!-- <td style="border-left:5px solid #F27022;width:1px;" ng-show="gameInfo.status == 1">[[row.row]]</td> -->
-							    		<td ng-click="selectSlot(slot)" ng-class="{'info':slot.active,'bg-gray':slot.status.id == 2,'bg-green':slot.mySquare && slot.status.id ==3, 'bg-red disabled':slot.status.id == 3,'bg-black':slot.status.id == 4}" ng-repeat="slot in row.slots" class="text-center" style="height:80px;width:80px;border:grey solid 1px;cursor:pointer;">
-							    			<i ng-show="makingPurchase && slot.active" class="fa fa-circle-o-notch fa-spin"></i>
-							    			<div ng-hide="makingPurchase && slot.active">
-							    				<i class="fa fa-star text-center fa-spin" ng-show="slot.status.id == 4" style="font-size:.8em;color:#F3F02D"></i>
-							    				<span ng->[[slot.status.name]]</span>
-							    				 <i class="fa fa-star-half-o text-center" ng-show="slot.mySquare && slot.status.id < 4"></i>
-							    				 <i class="fa fa-star text-center fa-spin" ng-show="slot.status.id == 4" style="font-size:.8em;color:#F3F02D"></i>
-							    				<br>[[slot.user.name]]
-							    				<br><span style="background-color:black;font-size:1.1em;padding:2px;"><span style="font-weight:bold;color:#009ADA">[[slot.home_score]]</span> - <span style="font-weight:bold;color:#F27022">[[slot.away_score]]</span></span>
-							    				<!-- <div ng-show="slot.status.id == 4" style="color:#5AC594"><strong>$125.00!</strong></div> -->
-							    			</div>
-							    		</td>
-							    	</tr>
-							    </table>
+					  		<div class="row">
+					  			<div class="pats-div">
+					  			<img src="/img/team_logos/pats.png" class="team-logos">
+						  		<span class="pats-text">Patriots</span>
+						  		</div>
+					  		</div>
+						  	<div class="row">
+						  		<div class="col-xs-1" style="padding-top:75px;">
+						  			<img src="/img/team_logos/falcons.png" class="team-logos">
+						  			<span class="atl-text">Falcons</span>
+						  		</div>
+						  		<div class="col-xs-9">
+								    <table class="table" style="margin-left:35px;">
+								    	<tr style="border-left:5px solid black;border-right:1px solid #f4f4f4;">
+								    		<td style="border-top:5px solid black;"></td>
+								    		<td ng-show="gameInfo.status == 1" ng-repeat="letter in letters" style="border-top:5px solid #032b96;"></td>
+								    		<td ng-show="gameInfo.status == 2" ng-repeat="score in homeScores" style="border-top:5px solid #032b96;"><strong>[[score]]</strong></td>
+								    	</tr;>
+								    	<tr ng-repeat="row in grid">
+								    		<td style="border-left:5px solid #A6192D; width:1px;"><strong>[[row.row]]</strong></td>
+								    		<td ng-click="selectSlot(slot)" ng-class="{'info':slot.active,'bg-gray':slot.status.id == 2,'bg-green':slot.mySquare && slot.status.id ==3, 'bg-red disabled':slot.status.id == 3,'bg-black':slot.status.id == 4}" ng-repeat="slot in row.slots" class="text-center" style="height:80px;width:80px;border:grey solid 1px;cursor:pointer;">
+								    			<i ng-show="makingPurchase && slot.active" class="fa fa-circle-o-notch fa-spin"></i>
+								    			<div ng-hide="makingPurchase && slot.active">
+								    				<i class="fa fa-star text-center fa-spin" ng-show="slot.status.id == 4" style="font-size:.8em;color:#ffdd54;"></i>
+								    				<span style="text-decoration: underline">[[slot.status.name]]</span>
+								    				<i class="fa fa-star text-center fa-spin" ng-show="slot.status.id == 4" style="font-size:.8em;color:#ffdd54;"></i>
+								    				<br>[[slot.user.name]]
+								    				<br>
+								    				<span style="font-size:1.1em;padding:2px;" ng-show="gameInfo.status > 1">
+								    					<span style="font-weight:bold;color: #032b96;">[[slot.home_score]]</span>
+								    					 - 
+								    					 <span style="font-weight:bold;color:#A6192D;">[[slot.away_score]]</span>
+								    				</span>
+								    				<!-- <div ng-show="slot.status.id == 4" style="color:#5AC594"><strong>$125.00!</strong></div> -->
+								    			</div>
+								    		</td>
+								    	</tr>
+								    </table>
+								</div>
 							</div>
 						</div>
 						<div ng-show="divs[1].active" >
