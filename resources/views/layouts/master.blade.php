@@ -264,9 +264,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <a href="#"><i class="flaticon-american31" style="position:relative;right:22px;font-size:15px;"></i> <span>Open Pools</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">
               @foreach(App\PoolPlayer::openPools(Auth::user()->id) as $pool)
-                {{$pool->nfl_game_id}}
-                @if($pool->nfl_game_id === 2)
-                <li><a href="/pool/{{$pool->id}}">{{$pool->name}}</a></li>
+                @if($pool->nfl_game_id == 2)
+                  <li><a href="/pool/{{$pool->id}}">{{$pool->name}}</a></li>
                 @endif
               @endforeach
               </ul>
