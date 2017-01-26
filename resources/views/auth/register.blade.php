@@ -47,7 +47,7 @@
         Google+</a>
     </div> -->
 
-    <a href="/" class="text-center" style="margin-top:5px;">I already have a membership</a>
+    <a href="/" class="text-center" style="margin-top:5px;">Login</a>
   </div>
   <!-- /.form-box -->
   @if (count($errors) > 0)
