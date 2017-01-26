@@ -15,7 +15,7 @@
     <form action="register" method="post">
       {{ csrf_field() }}
       <div class="form-group has-feedback">
-        <input type="name" class="form-control" id="name" name="name" placeholder="Username">
+        <input type="name" class="form-control" id="name" name="name" placeholder="Player Name">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">

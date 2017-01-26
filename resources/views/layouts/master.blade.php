@@ -183,14 +183,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <!-- The user image in the navbar-->
                   <img src="/img/football_helmet.png" class="user-image" alt="User Image">
                   <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                  <span class="hidden-xs">{{Auth::user()->email}}</span>
+                  <span class="hidden-xs">{{Auth::user()->name}}</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- The user image in the menu -->
                   <li class="user-header" style="background-color:#ADADAD">
                     <img src="/img/football_helmet.png" class="img-circle" alt="User Image">
                     <p>
-                      {{Auth::user()->email}}
+                      {{Auth::user()->name}}
                       <!-- <small>Member since Nov. 2012</small> -->
                     </p>
                   </li>
