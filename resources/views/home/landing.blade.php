@@ -7,7 +7,7 @@
         <!-- <div class="tint"> -->
           <div class="col-sm-5 col-sm-offset-1 text-center">
             <div class="logo-lg landing-logo" style="font-size:90px;color:#black;text-shadow: 2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;margin-top:20px;"><b>Score</b>Squares</div>
-            <div class="landing-text" style="font-size:25px;color:black;text-shadow: 1px 0 white, 0 2px white, 2px 0 white, 0 -1px white;min-width:530px;">Managing your game day pool is easier than ever!</div>
+            <!-- <div class="landing-text" style="font-size:25px;color:black;text-shadow: 1px 0 white, 0 2px white, 2px 0 white, 0 -1px white;min-width:530px;">Managing your game day pool is easier than ever!</div> -->
             <br>
             <div class="box box-info landing-form" style="min-width:530px;">
             <div class="box-header with-border">

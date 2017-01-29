@@ -113,7 +113,5 @@ class CreateInitialTables extends Migration
         Schema::dropIfExists('pools');
         Schema::dropIfExists('nfl_games');
         Schema::dropIfExists('nfl_teams');
-
-
     }
 }

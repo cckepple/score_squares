@@ -4,10 +4,12 @@ namespace Illuminate\Foundation\Auth;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Log;
 
 trait RegistersUsers
 {
     use RedirectsUsers;
+
 
     /**
      * Show the application registration form.
@@ -36,7 +38,9 @@ trait RegistersUsers
         }
 
         Auth::login($this->create($request->all()));
-
+        if($request->input('gameId')){
+            return redirect('/pool/'.$request->input('gameId'));
+        }
         return redirect($this->redirectPath());
     }
 }

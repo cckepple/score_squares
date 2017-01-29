@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Pool;
 use App\PoolPlayer;
 use App\PoolSquare;
+use App\NflGame;
 use DB;
 use Auth;
 use Log;
@@ -21,16 +22,6 @@ class PoolController extends Controller
     {
         $this->middleware('auth',['except'=>'show']);
         $this->middleware('game',['only'=>'show']);
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
     }
 
     /**
@@ -127,40 +118,6 @@ class PoolController extends Controller
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     public function getPoolSquares($id)
     {   
         $pool = Pool::find($id);
@@ -170,6 +127,8 @@ class PoolController extends Controller
                         'squares'=>PoolSquare::with('user')->where('pool_id','=', $id)->get(), 
                         'curUser'=>Auth::user()->id, 
                         'gameInfo'=>$pool, 
+                        'nflGameInfo'=> $pool->nflgame,
+                        'winners' => $pool->winners(),
                         'admin'=>PoolPlayer::poolAdmin($id),
                         'homeScores'=>$homeScores,
                         'awayScores'=>$awayScores
@@ -267,25 +226,78 @@ class PoolController extends Controller
         if ($quarter > 4) {
             $quarter = 4;
         }
-        $pool = Pool::find($gameId);
-        $data = array('quarter'=>$quarter, 'pool'=>$pool);
+        $data = array('quarter'=>$quarter, 'pool'=>$gameId);
         return view('pool.score-game')->with($data);
     }
     public function scoreGamePost(Request $request)
     {
         $homeScore = $request->input('home_score');
         $awayScore = $request->input('away_score');
-        $gameId = $request->input('game_id');
+        $gameId = $request->input('gameId');
         $quarter = $request->input('quarter');
-        Log::info($homeScore);
-        Log::info($awayScore);
 
-        $winningSquare = PoolSquare::where('home_score','=',$homeScore)->where('away_score','=',$awayScore)->update(array('status'=>PoolSquare::STATUS_WINNER));
-        Pool::where('id','=',$gameId)->update(array('fq_winner_id'=>$winningSquare['id']));
-        $pool = Pool::find($gameId);
-        Log::info($pool);
-        Session::flash('info','Score Was Saved! -- Car:'.$homeScore.' | Den: '.$awayScore);
-        $data = array('quarter'=>$quarter, 'pool'=>$pool['id']);
+        switch ($quarter) {
+            case '1':
+                $setWinner = 'fq_';
+                break;
+            case '2':
+                $setWinner = 'sq_';
+                break;
+            case '3':
+                $setWinner = 'tq_';
+                break;
+            case '4':
+                $setWinner = 'lq_';
+                break;
+            default:
+                $setWinner = false;
+                break;
+        }
+
+
+        if($setWinner){
+            NflGame::where('id','=',$gameId)->update([$setWinner.'home_score' => $homeScore, $setWinner.'away_score' => $awayScore]);
+
+            $homeScore = substr($homeScore, -1);
+            $awayScore = substr($awayScore, -1);
+
+            PoolSquare::where('home_score','=',$homeScore)->where('away_score','=',$awayScore)->update(array('status'=>PoolSquare::STATUS_WINNER));
+            $winningSquares = PoolSquare::where('home_score','=',$homeScore)->where('away_score','=',$awayScore)->get();
+            foreach ($winningSquares as $square) {
+                Pool::where('id','=',$square->pool_id)->update(array($setWinner.'winner_id'=>$square->user_id));
+            }
+
+            Session::flash('info','Score Was Saved! -- Pats:'.$homeScore.' | Atl: '.$awayScore);
+            $data = array('quarter'=>$quarter, 'pool'=>$gameId);
+        }
         return view('pool.score-game')->with($data);
+    }
+
+    public function testSetScore($gameId)
+    {
+        $pool = Pool::find($gameId);
+        if($pool->unClaimedSquaresCount()){
+            /* Squares are still available, don't allow */
+            return response()->json('squares available');
+        }else{
+
+            $scores = [0,1,2,3,4,5,6,7,8,9];
+            
+            shuffle($scores);
+            $pool->home_scores = implode("-", $scores);
+            $pool->setScoresSquares('home',$scores);
+            
+            shuffle($scores);
+            $pool->away_scores = implode("-", $scores);
+            $pool->setScoresSquares('away',$scores);
+            
+            $pool->status = $pool::STATUS_PRE_GAME;
+            $pool->save();
+
+
+            return response()->json('scores set!');
+
+        }
+
     }
 }

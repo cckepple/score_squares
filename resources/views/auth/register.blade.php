@@ -14,6 +14,9 @@
 
     <form action="register" method="post">
       {{ csrf_field() }}
+      @if(Session::has('gameId'))
+        <input type="hidden" name="gameId" value="{{Session::get('gameId')}}">
+      @endif
       <div class="form-group has-feedback">
         <input type="name" class="form-control" id="name" name="name" placeholder="Player Name">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>

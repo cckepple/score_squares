@@ -1,16 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
-
 //Routes to Handle Login & Registration
 Route::get('/', 'Auth\AuthController@getLogin');
 Route::post('/login' , 'Auth\AuthController@postLogin');
@@ -36,3 +25,5 @@ Route::post('/api/pool/remove-player-claim', 'PoolController@removePlayerClaim')
 //first ver. score game
 Route::get('/api/game/score-game/{quarter}/{gameId}', 'PoolController@scoreGameShow');
 Route::post('/api/game/score-game/{quarter}/{gameId}', 'PoolController@scoreGamePost');
+Route::get('/api/pool/{id}/set-scores', 'PoolController@testSetScore');
+

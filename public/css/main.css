@@ -1,11 +1,4 @@
-.landing {
-    /*background: url('/img/football_landing.jpg') no-repeat center center fixed; */
-    background: url('/img/large_fball.jpg') no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
+
 
 @media screen and (max-width: 810px) {
 	.trophy {

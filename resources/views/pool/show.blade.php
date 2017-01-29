@@ -88,14 +88,13 @@ app.controller('ShowPoolCtrl', function ($scope, $http, $filter, $location, $tim
 			var squares = data.squares;
 			$scope.myId = data.curUser;
 			$scope.gameInfo = data.gameInfo;
-			console.log($scope.gameInfo);
+			$scope.nflGameInfo = data.nflGameInfo;
+			$scope.winners = data.winners;
+			console.log($scope.winners);
 			$scope.admin = data.admin;
 			$scope.grid = []
 			$scope.homeScores = data.homeScores;
-			console.log($scope.homeScores)
-			console.log(data);
 			$scope.awayScores = data.awayScores;
-			console.log
 			var i = 0;
 			for (var r = 0; r < 10; r++) {
 				$scope.grid.push({'row':$scope.awayScores[r], 'slots':[]});
@@ -285,6 +284,47 @@ app.controller('ShowPoolCtrl', function ($scope, $http, $filter, $location, $tim
 		$scope.getPoolSquares();
 		$scope.getPoolPlayers();
 	}
+
+	$scope.copyAnimation = function()
+	{
+		var copyTxt = jQuery('.copy-anim').text();
+		if(copyTxt.indexOf('Click to copy') > -1){
+			var $copy = jQuery('.copy-anim');
+			$copy.hide();
+			$copy.text('Copied!');
+			$copy.fadeIn();
+			setTimeout(function(){
+				$copy.hide();
+				$copy.text('Click to copy, share with friends!');
+				$copy.fadeIn();
+			},2000);
+		}
+	}
+
+	$scope.setGridScores = function()
+	{
+		$http.get('/api/pool/'+$scope.poolId+'/set-scores')
+		.success(function(data){
+			if(data.indexOf('squares available') > -1){
+				var $alertEm = jQuery('#setScoreInfo');
+				if($alertEm.text().length === 0){
+					$alertEm.text('Cannot set scores until all squares are owned.');
+					$alertEm.addClass('alert-danger');
+					$alertEm.fadeIn();
+					setTimeout(function(){
+						$alertEm.fadeOut();
+						$alertEm.text('');
+						$alertEm.removeClass('alert-danger');
+					}, 3000);	
+				}
+			}else{
+				$window.location.reload();
+			}
+		})
+		.error(function(data){
+			console.log(data);
+		});
+	}
 	var urlArr1 = $location.absUrl().split('/');
 	var urlArr2 = $location.absUrl().split('//');
 	$scope.absUrl = $location.absUrl();
@@ -398,8 +438,8 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 
 @section('content')
 <div ng-app="scoreSquares" ng-controller="ShowPoolCtrl">
-	<section class="content-header">
-	  	<h4>SUPER BOWL 50 - [[gameInfo.name]]</h4>
+	<section class="content-header ng-cloak">
+	  	<h4>SUPER BOWL 51 - [[gameInfo.name]]</h4>
 	</section>
 	<section class="content">
 	  	<div class="row">
@@ -411,7 +451,6 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 						  		<div class="btn-group text-center" role="group">
 									<button class="btn btn-primary" ng-class="{'active': divs[0].active}" ng-click="showDiv(1)">Squares</button>
 									<button class="btn btn-primary" ng-class="{'active': divs[1].active}" ng-click="showDiv(2)">Scores</button>
-									<button class="btn btn-primary" ng-class="{'active': divs[2].active}" ng-click="showDiv(3)" ng-show="myId == admin.user.id">Admin</button>
 								</div>	
 						  	</div>
 					  	</div>
@@ -430,25 +469,25 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 						  		</div>
 						  		<div class="col-xs-9">
 								    <table class="table" style="margin-left:35px;">
-								    	<tr style="border-left:5px solid black;border-right:1px solid #f4f4f4;">
-								    		<td style="border-top:5px solid black;"></td>
-								    		<td ng-show="gameInfo.status == 1" ng-repeat="letter in letters" style="border-top:5px solid #032b96;"></td>
-								    		<td ng-show="gameInfo.status == 2" ng-repeat="score in homeScores" style="border-top:5px solid #032b96;"><strong>[[score]]</strong></td>
+								    	<tr style="border-left:15px solid black;border-right:1px solid #f4f4f4;">
+								    		<td style="border-top:15px solid black;"></td>
+								    		<td ng-show="gameInfo.status == 1" ng-repeat="letter in letters" style="border-top:15px solid #0D254C;"></td>
+								    		<td ng-show="gameInfo.status == 2" ng-repeat="score in homeScores" style="border-top:15px solid #0D254C;"><strong>[[score]]</strong></td>
 								    	</tr;>
 								    	<tr ng-repeat="row in grid">
-								    		<td style="border-left:5px solid #A6192D; width:1px;"><strong>[[row.row]]</strong></td>
-								    		<td ng-click="selectSlot(slot)" ng-class="{'info':slot.active,'bg-gray':slot.status.id == 2,'bg-green':slot.mySquare && slot.status.id ==3, 'bg-red disabled':slot.status.id == 3,'bg-black':slot.status.id == 4}" ng-repeat="slot in row.slots" class="text-center" style="height:80px;width:80px;border:grey solid 1px;cursor:pointer;">
+								    		<td style="border-left:15px solid #A6192D; width:1px;"><span ng-show="gameInfo.status == 2"><strong>[[row.row]]</strong></span></td>
+								    		<td ng-click="selectSlot(slot)" ng-class="{'info':slot.active,'bg-gray':slot.status.id == 2,'bg-green':slot.mySquare && slot.status.id ==3, 'bg-gray disabled':slot.status.id == 3,'bg-white':slot.status.id == 4}" ng-repeat="slot in row.slots" class="text-center" style="height:80px;width:80px;border:grey solid 1px;cursor:pointer;">
 								    			<i ng-show="makingPurchase && slot.active" class="fa fa-circle-o-notch fa-spin"></i>
 								    			<div ng-hide="makingPurchase && slot.active">
 								    				<i class="fa fa-star text-center fa-spin" ng-show="slot.status.id == 4" style="font-size:.8em;color:#ffdd54;"></i>
-								    				<span style="text-decoration: underline">[[slot.status.name]]</span>
+								    				<span >[[slot.status.name]]</span>
 								    				<i class="fa fa-star text-center fa-spin" ng-show="slot.status.id == 4" style="font-size:.8em;color:#ffdd54;"></i>
-								    				<br>[[slot.user.name]]
+								    				<br><br><span style="" ng-show="slot.user.name">[[slot.user.name]]</span>
 								    				<br>
 								    				<span style="font-size:1.1em;padding:2px;" ng-show="gameInfo.status > 1">
-								    					<span style="font-weight:bold;color: #032b96;">[[slot.home_score]]</span>
+								    					<span style="font-weight:bold;color:#A6192D;">[[slot.away_score]]</span>
 								    					 - 
-								    					 <span style="font-weight:bold;color:#A6192D;">[[slot.away_score]]</span>
+								    					<span style="font-weight:bold;color: #0D254C;">[[slot.home_score]]</span>
 								    				</span>
 								    				<!-- <div ng-show="slot.status.id == 4" style="color:#5AC594"><strong>$125.00!</strong></div> -->
 								    			</div>
@@ -459,58 +498,81 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 							</div>
 						</div>
 						<div ng-show="divs[1].active" >
-							<h4>Score Board</h4>
-							<div class="col-md-5 col-md-offset-1 col-xs-12">
-					          <div class="info-box">
-					            <span class="info-box-icon bg-gray"><i class="fa fa-flag-o"></i></span>
-					            <div class="info-box-content">
-					              <span class="info-box-text">1st Quarter</span>
-					              <span class="info-box-number">0-0</span>
-					            </div>
-					          </div>
-					        </div>
-					        <div class="col-md-5 col-md-offset-1 col-xs-12">
-					          <div class="info-box">
-					            <span class="info-box-icon bg-gray"><i class="fa fa-flag-o"></i></span>
-
-					            <div class="info-box-content">
-					              <span class="info-box-text">2nd Quarter</span>
-					              <span class="info-box-number">0-0</span>
-					            </div>
-					          </div>
-					        </div>
-					        <div class="col-md-5 col-md-offset-1 col-xs-12">
-					          <div class="info-box">
-					            <span class="info-box-icon bg-gray"><i class="fa fa-flag-o"></i></span>
-					            <div class="info-box-content">
-					              <span class="info-box-text">3rd Quarter</span>
-					              <span class="info-box-number">0-0</span>
-					            </div>
-					          </div>
-					        </div>
-					        <div class="col-md-5 col-md-offset-1 col-xs-12">
-					          <div class="info-box">
-					            <span class="info-box-icon bg-gray"><i class="fa fa-flag-o"></i></span>
-					            <div class="info-box-content">
-					              <span class="info-box-text">4th Quarter</span>
-					              <span class="info-box-number">0-0</span>
-					            </div>
-					          </div>
-					        </div>
-					        <h4>Rules</h4>
-					        <div class="col-lg-8 col-lg-offset-2">
-					        	<div class="callout callout-info">
-				                	<p>Each square is assigned a value for purchase.  Once all the squares have been
-					        	claimed and marked as paid, each square of the grid's X & Y axis will be assigned a number (0-9).  Each quarter
-					        	of the game will mark a new winner!  An example, if Carolina is winning 21 - 3 after the first quarter,
-					        	then the owner of the block that falls on the 1 spot on the X axis and the 3 spot ont the Y axis will have won!.
-					        	The game will assigned the winner 1/4 of the total pot after each quater in the game.</p>
-				              	</div>
-					        </div>
-						</div>
-						<div ng-show="divs[2].active">
 							<div class="row">
-								<div class="col-sm-6" style="margin-bottom:15px;">
+								<div class="col-sm-6">
+									<h4>Score Board</h4>
+									<table class="table">
+										<tbody class="text-center">
+											<tr>
+												<td></td>
+												<td><img src="/img/team_logos/falcons.png" style="max-height:78px;"></td>
+												<td><img src="/img/team_logos/pats.png" style="max-width:100px;"></td>	
+												<td style="padding-top: 88px;">Winner!</td>
+											</tr>
+											<tr>
+												<td>Quarter 1</td>
+												<td>[[nflGameInfo.fq_away_score]]</td>
+												<td>[[nflGameInfo.fq_home_score]]</td>
+												<td>[[winners[1].name]]</td>
+											</tr>
+											<tr>
+												<td>Quarter 2</td>
+												<td>[[nflGameInfo.sq_away_score]]</td>
+												<td>[[nflGameInfo.sq_home_score]]</td>
+												<td>[[winners[2].name]]</td>
+											</tr>
+											<tr>
+												<td>Quarter 3</td>
+												<td>[[nflGameInfo.tq_away_score]]</td>
+												<td>[[nflGameInfo.tq_home_score]]</td>
+												<td>[[winners[3].name]]</td>
+											</tr>
+											<tr>
+												<td>Quarter 4</td>
+												<td>[[nflGameInfo.lq_away_score]]</td>
+												<td>[[nflGameInfo.lq_home_score]]</td>
+												<td>[[winners[4].name]]</td>
+											</tr>
+
+										</tbody>
+									</table>
+								</div>
+								<div class="col-sm-6">
+									<h4>Invite friends!</h4>
+									<div class="col-xs-12">
+										<div class="alert alert-info" style="height:60px;font-size:1.15em;font-weight:bold;background-color: #F4F4F4 !important;cursor: pointer;" id="copyLink" data-clipboard-text="[[absUrl]]" ng-click="copyAnimation()">
+									        <div class="info info-info" style="color:black;">
+									        	<span>[[niceUrl]]</span>
+									        	<span class="pull-right copy-anim" style="padding-right:25px;">Click to copy, share with friends!</span>
+									        </div>
+								        </div>
+							        </div>
+									<br>
+									<h4>How to Play</h4>
+									<div class="col-xs-12">
+							        	<div class="callout callout-info">
+						                	<ol style="font-size:1.1em;">
+						                		<li>It's a lottery, so while squares are open simply claim one or more!</li>
+						                		<li>Once all squares are claimed, the numbers 0-9 are randomly assigned along the grid for both teams.</li>
+						                		<li>While watching the game, at the end of each quarter check the grid using the last digit of each teams score</li>
+						                			<ul>
+						                				<li>Example: If the patriots are up 27-3 at the end of quarter one, the person holding square 3-7 on the grid wins!</li>
+						                			</ul>
+						                	</ol>
+						              	</div>
+						            </div>
+								</div>
+							</div>
+							<div class="row" ng-show="myId == admin.user.id">
+									<div class="col-sm-8 col-sm-offset-2" style="margin-bottom:15px;">
+									<br>
+									<hr>
+									<h3 class="text-center">Admin</h3>
+									<div class="text-center">
+										<button class="btn btn-info" ng-click="setGridScores()" ng-show="gameInfo.status === 1">Set Grid Scores</button>
+										<div id="setScoreInfo" style="display: none;margin-top:5px;"></div>
+									</div>
+									<hr>
 									<h4>Current Players</h4>
 									<div class="row" ng-repeat="player in players">
 										<div class="col-xs-12">
@@ -550,31 +612,8 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 								        </div>
 									</div>
 								</div>
-								<div class="col-sm-6">
-									<h4>Invite friends!</h4>
-									<div class="row">
-										<div class="col-xs-12">
-											<div class="alert alert-info col-xs-8" style="height:60px;font-size:1.15em;font-weight:bold;background-color: #F4F4F4 !important;">
-										        <div class="info info-info" style="color:black">[[niceUrl]]</div>
-									        </div>
-									        <div class="col-xs-4">
-									        	<button class="btn-app copyBtn pull-right" id="copyLink" data-clipboard-text="[[absUrl]]" style="margin-left:0px;"><i class="fa fa-copy"></i> Copy</button>
-									        </div>
-								        </div>
-									</div>
-									<div class="row">
-										<div class="col-lg-12 text-muted" style="position:relative;bottom:10px;">*Copy the link above and share it to your friends along with the game password</div>
-									</div>
-									<!-- <h4>Game Settings</h4>
-									<div class="row">
-										<div class="col-xs-12">
-											<button class="btn btn-app">Square Cost</button>
-											<button class="btn btn-app">Reset Password</button>
-										</div>
-									</div> -->
-								</div>
 							</div>
-				  		</div>
+						</div>
 				  	</div>
 				  	<div class="box-body" ng-show="pageLoading">
 				  		<i class="fa fa-spinner fa-spin"></i>
