@@ -90,7 +90,6 @@ app.controller('ShowPoolCtrl', function ($scope, $http, $filter, $location, $tim
 			$scope.gameInfo = data.gameInfo;
 			$scope.nflGameInfo = data.nflGameInfo;
 			$scope.winners = data.winners;
-			console.log($scope.winners);
 			$scope.admin = data.admin;
 			$scope.grid = []
 			$scope.homeScores = data.homeScores;
