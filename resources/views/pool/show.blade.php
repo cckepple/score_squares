@@ -482,7 +482,7 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 								    				<span >[[slot.status.name]]</span>
 								    				<i class="fa fa-star text-center fa-spin" ng-show="slot.status.id == 4" style="font-size:.8em;color:#ffdd54;"></i>
 								    				<br><br>
-								    				<span class="success" ng-show="slot.status.id === 1">[[gameInfo.squareCost | currency]]</span>
+								    				<span class="success" ng-show="slot.status.id == 1">[[gameInfo.squareCost | currency]]</span>
 								    				<span style="" ng-show="slot.user.name">[[slot.user.name]]</span>
 								    				<br>
 								    				<span style="font-size:1.1em;padding:2px;" ng-show="gameInfo.status > 1">
