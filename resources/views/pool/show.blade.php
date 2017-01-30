@@ -481,7 +481,9 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 								    				<i class="fa fa-star text-center fa-spin" ng-show="slot.status.id == 4" style="font-size:.8em;color:#ffdd54;"></i>
 								    				<span >[[slot.status.name]]</span>
 								    				<i class="fa fa-star text-center fa-spin" ng-show="slot.status.id == 4" style="font-size:.8em;color:#ffdd54;"></i>
-								    				<br><br><span style="" ng-show="slot.user.name">[[slot.user.name]]</span>
+								    				<br><br>
+								    				<span class="success" ng-show="slot.status.id === 1">[[gameInfo.squareCost | currency]]</span>
+								    				<span style="" ng-show="slot.user.name">[[slot.user.name]]</span>
 								    				<br>
 								    				<span style="font-size:1.1em;padding:2px;" ng-show="gameInfo.status > 1">
 								    					<span style="font-weight:bold;color:#A6192D;">[[slot.away_score]]</span>
@@ -506,7 +508,7 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 												<td></td>
 												<td><img src="/img/team_logos/falcons.png" style="max-height:78px;"></td>
 												<td><img src="/img/team_logos/pats.png" style="max-width:100px;"></td>	
-												<td style="padding-top: 88px;">Winner!</td>
+												<td style="padding-top: 78px;">Winner!</td>
 											</tr>
 											<tr>
 												<td>Quarter 1</td>
