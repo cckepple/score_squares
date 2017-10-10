@@ -41,6 +41,7 @@ trait RegistersUsers
         if($request->input('gameId')){
             return redirect('/pool/'.$request->input('gameId'));
         }
+        Log::info($this->redirectPath());
         return redirect($this->redirectPath());
     }
 }
