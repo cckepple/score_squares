@@ -94,6 +94,8 @@ app.controller('ShowPoolCtrl', function ($scope, $http, $filter, $location, $tim
 			$scope.grid = []
 			$scope.homeScores = data.homeScores;
 			$scope.awayScores = data.awayScores;
+			$scope.homeTeam = data.homeTeam;
+			$scope.awayTeam = data.awayTeam;
 			var i = 0;
 			for (var r = 0; r < 10; r++) {
 				$scope.grid.push({'row':$scope.awayScores[r], 'slots':[]});
@@ -438,7 +440,7 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 @section('content')
 <div ng-app="scoreSquares" ng-controller="ShowPoolCtrl">
 	<section class="content-header ng-cloak">
-	  	<h4>SUPER BOWL 51 - [[gameInfo.name]]</h4>
+	  	<h4>SUPER BOWL LII - [[gameInfo.name]]</h4>
 	</section>
 	<section class="content">
 	  	<div class="row">
@@ -457,24 +459,24 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 					  	<div ng-show="divs[0].active">
 					  		<div class="row">
 					  			<div class="pats-div">
-					  			<img src="/img/team_logos/pats.png" class="team-logos">
-						  		<span class="pats-text">Patriots</span>
+					  			<img ng-src="[[homeTeam.primary_logo_path]]" class="team-logos">
+						  		<span class="pats-text">[[homeTeam.name]]</span>
 						  		</div>
 					  		</div>
 						  	<div class="row">
 						  		<div class="col-xs-1" style="padding-top:75px;">
-						  			<img src="/img/team_logos/falcons.png" class="team-logos">
-						  			<span class="atl-text">Falcons</span>
+						  			<img ng-src="[[awayTeam.primary_logo_path]]" class="team-logos">
+						  			<span class="atl-text">[[awayTeam.name]]</span>
 						  		</div>
 						  		<div class="col-xs-9">
 								    <table class="table" style="margin-left:35px;">
 								    	<tr style="border-left:15px solid black;border-right:1px solid #f4f4f4;">
 								    		<td style="border-top:15px solid black;"></td>
-								    		<td ng-show="gameInfo.status == 1" ng-repeat="letter in letters" style="border-top:15px solid #0D254C;"></td>
-								    		<td ng-show="gameInfo.status == 2" ng-repeat="score in homeScores" style="border-top:15px solid #0D254C;"><strong>[[score]]</strong></td>
+								    		<td ng-show="gameInfo.status == 1" ng-repeat="letter in letters" ng-style="{'border-top': '15px solid [[homeTeam.primary_color]]'}"></td>
+								    		<td ng-show="gameInfo.status == 2" ng-repeat="score in homeScores" ng-style="{'border-top': '15px solid [[homeTeam.primary_color]]'}"><strong>[[score]]</strong></td>
 								    	</tr;>
 								    	<tr ng-repeat="row in grid">
-								    		<td style="border-left:15px solid #A6192D; width:1px;"><span ng-show="gameInfo.status == 2"><strong>[[row.row]]</strong></span></td>
+								    		<td ng-style="{'border-left':'15px solid [[awayTeam.primary_color]]', 'width':'1px'}"><span ng-show="gameInfo.status == 2"><strong>[[row.row]]</strong></span></td>
 								    		<td ng-click="selectSlot(slot)" ng-class="{'info':slot.active,'bg-gray':slot.status.id == 2,'bg-green':slot.mySquare && slot.status.id ==3, 'bg-gray disabled':slot.status.id == 3,'bg-white':slot.status.id == 4}" ng-repeat="slot in row.slots" class="text-center" style="height:80px;width:80px;border:grey solid 1px;cursor:pointer;">
 								    			<i ng-show="makingPurchase && slot.active" class="fa fa-circle-o-notch fa-spin"></i>
 								    			<div ng-hide="makingPurchase && slot.active">
@@ -486,9 +488,9 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 								    				<span style="" ng-show="slot.user.name">[[slot.user.name]]</span>
 								    				<br>
 								    				<span style="font-size:1.1em;padding:2px;" ng-show="gameInfo.status > 1">
-								    					<span style="font-weight:bold;color:#A6192D;">[[slot.away_score]]</span>
+								    					<span ng-style="{'font-weight':'bold','color':'[[awayTeam.primary_color]]'}">[[slot.away_score]]</span>
 								    					 - 
-								    					<span style="font-weight:bold;color: #0D254C;">[[slot.home_score]]</span>
+								    					<span ng-style="{'border-top': '15px solid [[homeTeam.primary_color]]'}">[[slot.home_score]]</span>
 								    				</span>
 								    				<!-- <div ng-show="slot.status.id == 4" style="color:#5AC594"><strong>$125.00!</strong></div> -->
 								    			</div>
@@ -506,8 +508,8 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 										<tbody class="text-center">
 											<tr>
 												<td></td>
-												<td><img src="/img/team_logos/falcons.png" style="max-height:78px;"></td>
-												<td><img src="/img/team_logos/pats.png" style="max-width:100px;"></td>	
+												<td><img ng-src="[[awayTeam.primary_logo_path]]" style="max-height:78px;"></td>
+												<td><img ng-src="[[homeTeam.primary_logo_path]]" style="max-width:100px;"></td>	
 												<td style="padding-top: 78px;">Winner!</td>
 											</tr>
 											<tr>

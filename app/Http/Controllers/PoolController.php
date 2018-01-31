@@ -123,6 +123,11 @@ class PoolController extends Controller
         $pool = Pool::find($id);
         $homeScores = explode('-', $pool->home_scores);
         $awayScores = explode('-', $pool->away_scores);
+        try {
+            Log::info($pool->nflgame->homeTeam);
+        } catch (Exception $e) {
+            Log::info($e);
+        }
         $data = array(
                         'squares'=>PoolSquare::with('user')->where('pool_id','=', $id)->get(), 
                         'curUser'=>Auth::user()->id, 
@@ -131,7 +136,9 @@ class PoolController extends Controller
                         'winners' => $pool->winners(),
                         'admin'=>PoolPlayer::poolAdmin($id),
                         'homeScores'=>$homeScores,
-                        'awayScores'=>$awayScores
+                        'awayScores'=>$awayScores,
+                        'homeTeam'=>$pool->nflgame->homeTeam,
+                        'awayTeam'=>$pool->nflgame->awayTeam
                     );
 
         return response()->json($data);
