@@ -53,7 +53,7 @@ class PoolController extends Controller
             $pool->status = Pool::STATUS_SQUARES_OPEN;
             $pool->nfl_game_id = $request->input('nfl_game_id');
             $pool->square_cost = $request->input('square_cost');
-            $pool->password = $request->input('password');
+            $pool->password = $request->input('game_password');
             $pool->honor_system = $honor ? 1 : 0;
             $pool->save();
 

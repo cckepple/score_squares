@@ -51,7 +51,7 @@
 					    </div>
 					    <div class="form-group col-lg-8">
 					      <label>Game Password</label>
-					      <input type="password" class="form-control" name="password" placeholder="Password">
+					      <input type="text" class="form-control" name="game_password">
 					    </div>
 					    <!-- <div class="checkbox form-group col-lg-12">
 					      <label>
