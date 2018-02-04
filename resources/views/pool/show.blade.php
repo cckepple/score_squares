@@ -490,7 +490,7 @@ app.controller('RemovePayModalInstanceCtrl', function ($scope, $uibModalInstance
 								    				<span style="font-size:1.1em;padding:2px;" ng-show="gameInfo.status > 1">
 								    					<span ng-style="{'font-weight':'bold','color':'[[awayTeam.primary_color]]'}">[[slot.away_score]]</span>
 								    					 - 
-								    					<span ng-style="{'border-top': '15px solid [[homeTeam.primary_color]]'}">[[slot.home_score]]</span>
+								    					<span ng-style="{'font-weight':'bold', 'color': '[[homeTeam.primary_color]]'}">[[slot.home_score]]</span>
 								    				</span>
 								    				<!-- <div ng-show="slot.status.id == 4" style="color:#5AC594"><strong>$125.00!</strong></div> -->
 								    			</div>
